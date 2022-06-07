@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 public class GameEx {
 
 	public static void main(String[] args) {
-		JFrame frame = new JFrame("YJ Shooting Game");
+		JFrame frame = new JFrame("FLIGHTGROUND");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		BackgroundPanel primary = new BackgroundPanel();
