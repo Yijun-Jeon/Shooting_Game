@@ -32,5 +32,6 @@ public class LabelThread extends JLabel implements Runnable {
 			}catch(Exception e) {return;}
 		}
 		this.setVisible(false);
+		bRun = true;
 	}
 }
