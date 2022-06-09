@@ -2,8 +2,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -15,6 +13,8 @@ public class BackgroundPanel extends JPanel {
 	ImageIcon backgroundImg, startImg,heartImg,scoreImg;
 	JLabel lblLogo,lblHeart1,lblHeart2,lblHeart3,lblScore;
 	LabelThread lblStart;
+	
+	Plane plane;
 	
 	int score;
 	
@@ -51,6 +51,10 @@ public class BackgroundPanel extends JPanel {
 		lblScore.setForeground(Color.BLUE);
 		add(lblScore);
 		lblScore.setVisible(false);
+		
+		plane = new Plane();
+		plane.setBounds(plane.pt.x,plane.pt.y,plane.planeImg.getIconWidth(),plane.planeImg.getIconHeight());
+		add(plane);
 		
 		lblStart.start();
 	}
