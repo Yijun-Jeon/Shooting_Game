@@ -52,10 +52,6 @@ public class BackgroundPanel extends JPanel {
 		add(lblScore);
 		lblScore.setVisible(false);
 		
-		this.addKeyListener(new KeyBoardListener());
-		this.requestFocus(true);
-		this.setFocusable(true);
-		
 		lblStart.start();
 	}
 
@@ -64,25 +60,7 @@ public class BackgroundPanel extends JPanel {
 		page.drawImage(backgroundImg.getImage(),0,0,null);
 	}
 	
-	public class KeyBoardListener implements KeyListener{
-
-		@Override
-		public void keyPressed(KeyEvent e) {
-			int keyCode = e.getKeyCode();
-			if(keyCode == KeyEvent.VK_ENTER) {
-				lblStart.setRun(false);
-				lblLogo.setVisible(false);
-				lblHeart1.setVisible(true);
-				lblHeart2.setVisible(true);
-				lblHeart3.setVisible(true);
-				lblScore.setVisible(true);
-			}
-		}
-		
-		@Override
-		public void keyTyped(KeyEvent e) {}
-		@Override
-		public void keyReleased(KeyEvent e) {}
-		
+	public void addKeyController(KeyController key) {
+		this.addKeyListener(key);
 	}
 }

@@ -10,6 +10,9 @@ public class GameEx {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		BackgroundPanel primary = new BackgroundPanel();
+		KeyController key = new KeyController(primary);
+		primary.addKeyController(key);
+		
 		frame.getContentPane().add(primary);
 		frame.setLocation(400, 0);
 		
