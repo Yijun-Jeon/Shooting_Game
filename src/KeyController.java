@@ -15,13 +15,11 @@ public class KeyController implements KeyListener{
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 		if(keyCode == KeyEvent.VK_ENTER) {
-			panel.lblStart.setRun(false);
-			panel.lblLogo.setVisible(false);
-			panel.lblHeart1.setVisible(true);
-			panel.lblHeart2.setVisible(true);
-			panel.lblHeart3.setVisible(true);
 			panel.lblScore.setVisible(true);
+			panel.lblStart.setRun(false);
+			panel.status = 1;
 		}
+		panel.repaint();
 	}
 	
 	@Override
