@@ -53,7 +53,7 @@ public class BackgroundPanel extends JPanel {
 		lblScore.setVisible(false);
 		
 		plane = new Plane();
-		plane.setBounds(plane.pt.x,plane.pt.y,plane.planeImg.getIconWidth(),plane.planeImg.getIconHeight());
+		plane.setBounds(plane.getX(),plane.getY(),plane.planeImg.getIconWidth(),plane.planeImg.getIconHeight());
 		add(plane);
 		
 		lblStart.start();
