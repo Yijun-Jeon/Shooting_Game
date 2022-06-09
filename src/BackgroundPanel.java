@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -11,9 +12,11 @@ import javax.swing.SwingConstants;
 
 public class BackgroundPanel extends JPanel {
 	
-	ImageIcon backgroundImg, logoImg, startImg,heartImg;
-	JLabel lblLogo,lblHeart1,lblHeart2,lblHeart3;
+	ImageIcon backgroundImg, startImg,heartImg,scoreImg;
+	JLabel lblLogo,lblHeart1,lblHeart2,lblHeart3,lblScore;
 	LabelThread lblStart;
+	
+	int score;
 	
 	public BackgroundPanel() {
 		this.setPreferredSize(new Dimension(740,830));
@@ -38,6 +41,17 @@ public class BackgroundPanel extends JPanel {
 		add(lblHeart1); add(lblHeart2); add(lblHeart3);
 		lblHeart1.setVisible(false); lblHeart2.setVisible(false); lblHeart3.setVisible(false);
 		
+		score = 0;
+		scoreImg = new ImageIcon("./img/score.png");
+		lblScore = new JLabel("0",scoreImg,SwingConstants.CENTER);
+		lblScore.setBounds(630,0,100,80);
+		lblScore.setVerticalTextPosition(SwingConstants.BOTTOM);
+		lblScore.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblScore.setFont(new Font("Verdana",Font.BOLD+Font.ITALIC,20));
+		lblScore.setForeground(Color.BLUE);
+		add(lblScore);
+		lblScore.setVisible(false);
+		
 		this.addKeyListener(new KeyBoardListener());
 		this.requestFocus(true);
 		this.setFocusable(true);
@@ -61,6 +75,7 @@ public class BackgroundPanel extends JPanel {
 				lblHeart1.setVisible(true);
 				lblHeart2.setVisible(true);
 				lblHeart3.setVisible(true);
+				lblScore.setVisible(true);
 			}
 		}
 		
