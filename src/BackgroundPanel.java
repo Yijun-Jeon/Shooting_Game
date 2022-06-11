@@ -65,7 +65,7 @@ public class BackgroundPanel extends JPanel {
 			for(int i=0;i<life;i++)
 				page.drawImage(heartImg,10 + 70*i,10,null);
 			page.drawImage(scoreImg,630,0,null);
-			page.drawImage(Plane.planeImg.getImage(),plane.pt.x,plane.pt.y,null);
+			page.drawImage(Plane.planeImg.getImage(),plane.getX(),plane.getY(),null);
 			break;
 		}
 	}
