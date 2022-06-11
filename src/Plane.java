@@ -23,8 +23,19 @@ public class Plane extends JLabel {
 	
 	public void move(int degree) {
 		if(degree != -1) {
-			pt.x -= 4*Math.sin(Math.toRadians(degree));
-		 	pt.y -= 4*Math.cos(Math.toRadians(degree));
+			pt.x -= 5*Math.sin(Math.toRadians(degree));
+		 	pt.y -= 5*Math.cos(Math.toRadians(degree));
+		 	checkPt();
 		}
+	}
+	private void checkPt() {
+		if(pt.x < 0)
+			pt.x = 0;
+		else if(pt.x > 625)
+			pt.x = 625;
+		if(pt.y < 0)
+			pt.y = 0;
+		else if(pt.y > 740)
+			pt.y = 740;
 	}
 }
