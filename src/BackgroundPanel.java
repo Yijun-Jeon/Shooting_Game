@@ -9,17 +9,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-public class BackgroundPanel extends JPanel {
+public class BackgroundPanel extends JPanel{
 	
 	Image backgroundImg,logoImg, startImg,heartImg,scoreImg;
 	LabelThread lblStart;
 	JLabel lblScore;
+	Thread gameThread;
 	
 	Plane plane;
 	
 	int status;
 	int score;
 	int life;
+	int degree; // 0, 45, 90, 135, 180, 225, 270, 315
 	
 	public BackgroundPanel() {
 		this.setPreferredSize(new Dimension(740,830));
@@ -48,10 +50,12 @@ public class BackgroundPanel extends JPanel {
 		lblScore.setVisible(false);
 		add(lblScore);
 		
-		
 		plane = new Plane();
 
 		lblStart.start();
+		
+		gameThread = new Thread();
+		gameThread.start();
 	}
 
 	public void paintComponent(Graphics page) {
@@ -65,6 +69,7 @@ public class BackgroundPanel extends JPanel {
 			for(int i=0;i<life;i++)
 				page.drawImage(heartImg,10 + 70*i,10,null);
 			page.drawImage(scoreImg,630,0,null);
+			plane.move(degree);
 			page.drawImage(Plane.planeImg.getImage(),plane.getX(),plane.getY(),null);
 			break;
 		}
@@ -73,4 +78,5 @@ public class BackgroundPanel extends JPanel {
 	public void addKeyController(KeyController key) {
 		this.addKeyListener(key);
 	}
+
 }
