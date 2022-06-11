@@ -8,6 +8,15 @@ public class KeyController implements KeyListener{
 	public final static int LEFT	= 0x004;
 	public final static int RIGHT	= 0x008;
 	
+	public final static int LEFTDEGREE 		= 90;
+	public final static int RIGHTDEGREE 	= 270;
+	public final static int	UPDEGREE 		= 0;
+	public final static int DOWNDEGREE	 	= 180;
+	public final static int LEFTUPDEGREE	= 45;
+	public final static int LEFTDOWNDEGREE 	= 135;
+	public final static int RIGHTUPDEGREE 	= 315;
+	public final static int RIGHTDOWNDEGREE = 225;
+	
 	private BackgroundPanel panel;
 	int keyBuff;
 	
@@ -70,28 +79,28 @@ public class KeyController implements KeyListener{
 	public void keyHandle() {
 		switch(keyBuff) {
 		case LEFT:
-			panel.degree = 90;
+			panel.degree = LEFTDEGREE;
 			break;
 		case RIGHT:
-			panel.degree = 270;
+			panel.degree = RIGHTDEGREE;
 			break;
 		case UP:
-			panel.degree = 0;
+			panel.degree = UPDEGREE;
 			break;
 		case DOWN:
-			panel.degree = 180;
+			panel.degree = DOWNDEGREE;
 			break;
 		case LEFT | UP:
-			panel.degree = 45;
+			panel.degree = LEFTUPDEGREE;
 			break;
 		case RIGHT | UP:
-			panel.degree = 315;
+			panel.degree = RIGHTUPDEGREE;
 			break;
 		case LEFT | DOWN:
-			panel.degree = 135;
+			panel.degree = LEFTDOWNDEGREE;
 			break;
 		case RIGHT | DOWN:
-			panel.degree = 225;
+			panel.degree = RIGHTDOWNDEGREE;
 			break;
 		}
 	}
