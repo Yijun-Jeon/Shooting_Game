@@ -30,30 +30,22 @@ public class KeyController implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
-		switch(keyCode) {
-		case KeyEvent.VK_ENTER:
-			if(panel.status == 0) {
-				panel.lblScore.setVisible(true);
-				panel.lblStart.setRun(false);
-				panel.status = 1;
+		if(panel.status == 1) {
+			switch(keyCode) {
+			case KeyEvent.VK_LEFT:
+				keyBuff |= LEFT;
+				break;
+			case KeyEvent.VK_RIGHT:
+				keyBuff |= RIGHT;
+				break;
+			case KeyEvent.VK_UP:
+				keyBuff |= UP;
+				break;
+			case KeyEvent.VK_DOWN:
+				keyBuff |= DOWN;
+				break;
 			}
-			break;
-		case KeyEvent.VK_LEFT:
-			keyBuff |= LEFT;
-			break;
-		case KeyEvent.VK_RIGHT:
-			keyBuff |= RIGHT;
-			break;
-		case KeyEvent.VK_UP:
-			keyBuff |= UP;
-			break;
-		case KeyEvent.VK_DOWN:
-			keyBuff |= DOWN;
-			break;
-		}
-		keyHandle();
-		keyBuff = 0;
-		panel.repaint();
+		}else keyBuff = keyCode;
 	}
 	
 	@Override
@@ -77,30 +69,45 @@ public class KeyController implements KeyListener{
 	}
 	
 	public void keyHandle() {
-		switch(keyBuff) {
-		case LEFT:
-			panel.degree = LEFTDEGREE;
+		switch(panel.status) {
+		case 0:
+			if(keyBuff == KeyEvent.VK_ENTER) {
+				panel.lblScore.setVisible(true);
+				panel.lblStart.setRun(false);
+				panel.status = 1;
+				keyBuff = 0;
+			}
 			break;
-		case RIGHT:
-			panel.degree = RIGHTDEGREE;
-			break;
-		case UP:
-			panel.degree = UPDEGREE;
-			break;
-		case DOWN:
-			panel.degree = DOWNDEGREE;
-			break;
-		case LEFT | UP:
-			panel.degree = LEFTUPDEGREE;
-			break;
-		case RIGHT | UP:
-			panel.degree = RIGHTUPDEGREE;
-			break;
-		case LEFT | DOWN:
-			panel.degree = LEFTDOWNDEGREE;
-			break;
-		case RIGHT | DOWN:
-			panel.degree = RIGHTDOWNDEGREE;
+		case 1:
+			switch(keyBuff) {
+			case LEFT:
+				panel.degree = LEFTDEGREE;
+				break;
+			case RIGHT:
+				panel.degree = RIGHTDEGREE;
+				break;
+			case UP:
+				panel.degree = UPDEGREE;
+				break;
+			case DOWN:
+				panel.degree = DOWNDEGREE;
+				break;
+			case LEFT | UP:
+				panel.degree = LEFTUPDEGREE;
+				break;
+			case RIGHT | UP:
+				panel.degree = RIGHTUPDEGREE;
+				break;
+			case LEFT | DOWN:
+				panel.degree = LEFTDOWNDEGREE;
+				break;
+			case RIGHT | DOWN:
+				panel.degree = RIGHTDOWNDEGREE;
+				break;
+			default:
+				panel.degree = -1;
+				keyBuff = 0;
+			}
 			break;
 		}
 	}

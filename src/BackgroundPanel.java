@@ -21,7 +21,7 @@ public class BackgroundPanel extends JPanel{
 	int status;
 	int score;
 	int life;
-	int degree; // 0, 45, 90, 135, 180, 225, 270, 315
+	int degree;
 	
 	public BackgroundPanel() {
 		this.setPreferredSize(new Dimension(740,830));

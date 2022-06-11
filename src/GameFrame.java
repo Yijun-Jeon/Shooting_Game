@@ -1,30 +1,39 @@
 import javax.swing.JFrame;
 
 public class GameFrame extends JFrame implements Runnable{
-	BackgroundPanel primary;
-	KeyController key;
-	Thread GameThread;
+	private BackgroundPanel panel;
+	private KeyController key;
+	private Thread GameThread;
 	
 	public GameFrame() {
 		super("FLIGHT GROUND");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		BackgroundPanel primary = new BackgroundPanel();
-		KeyController key = new KeyController(primary);
-		primary.addKeyController(key);
+		panel = new BackgroundPanel();
+		key = new KeyController(panel);
+		panel.addKeyController(key);
 
-		getContentPane().add(primary);
+		getContentPane().add(panel);
 		setLocation(400, 0);
 
 		setResizable(false);	
 		pack();
 	}
-
-	@Override
+	
+	public void start() {
+		setVisible(true);
+		if (GameThread == null)
+			GameThread = new Thread(this);
+		GameThread.start();
+	}
+	
 	public void run() {
 		while(true) {
-			primary.repaint();
-			key.keyHandle();
+			try {
+				panel.repaint();
+				key.keyHandle();
+			}
+			catch(Exception e) {e.printStackTrace();}
 		}
 	}
 }
