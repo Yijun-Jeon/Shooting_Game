@@ -22,9 +22,9 @@ public class Plane extends JLabel {
 	public Point getPt() {return pt;}
 	
 	public void move(int degree) {
-		 int x = getX() - 4*(int)Math.sin(Math.toRadians(degree));
-		 int y = getY() - 4*(int)Math.cos(Math.toRadians(degree));
-		 
-		 setX(x);setY(y);
+		if(degree != -1) {
+			pt.x -= 4*Math.sin(Math.toRadians(degree));
+		 	pt.y -= 4*Math.cos(Math.toRadians(degree));
+		}
 	}
 }
