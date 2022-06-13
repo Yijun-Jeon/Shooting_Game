@@ -21,9 +21,9 @@ public class Bullet {
 	public Point getPt() {return pt;}
 	
 	public void moveAhead() {
-		setY(getY()-5);
+		setY(getY()-GameConstants.PLANEBULLETSPEED);
 	}
 	public void moveDown() {
-		setY(getY()+2);
+		setY(getY()+GameConstants.ENEMYBULLETSPEED);
 	}
 }

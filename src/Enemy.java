@@ -13,6 +13,7 @@ public class Enemy {
 		pt = new Point((int)(Math.random()*625),0);
 		enemyNum = num;
 		bullets = new LinkedList<Bullet>();
+		bullets.offer(new Bullet(this));
 		shootTime = System.currentTimeMillis();
 	}
 	
@@ -26,13 +27,13 @@ public class Enemy {
 	public Point getPt() {return pt;}
 	
 	public boolean moveDown() {
-		setY(getY()+1);
+		setY(getY()+GameConstants.ENEMYDOWNSPEED);
 		return getY() > 830;
 	}
 	
 	public void shoot() {
 		long time = System.currentTimeMillis();
-		if((time-shootTime)/1000 >= 1) {
+		if((time-shootTime)/1000 >= GameConstants.ENEMYSHOOTTERM) {
 			bullets.offer(new Bullet(this));
 			shootTime = time;
 		}

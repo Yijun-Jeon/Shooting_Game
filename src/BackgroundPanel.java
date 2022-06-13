@@ -30,7 +30,6 @@ public class BackgroundPanel extends JPanel{
 	
 	Vector<Enemy> enemies;
 	long enemyTime;
-	int enemyTimeCnt;
 	int enemyNum;
 	
 	
@@ -75,7 +74,6 @@ public class BackgroundPanel extends JPanel{
 		
 		enemies = new Vector<Enemy>();
 		enemyTime = System.currentTimeMillis();
-		enemyTimeCnt = 2;
 		enemyNum = 1;
 	}
 
@@ -133,7 +131,7 @@ public class BackgroundPanel extends JPanel{
 	}
 	private void makeEnemy() {
 		long time = System.currentTimeMillis();
-		if((time - enemyTime)/1000 >= enemyTimeCnt) {
+		if((time - enemyTime)/1000 >= GameConstants.ENEMYMAKINGTERM) {
 			enemies.add(new Enemy(enemyNum));
 			enemyTime = time;
 		}

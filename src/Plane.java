@@ -23,8 +23,8 @@ public class Plane{
 	
 	public void move(int degree) {
 		if(degree != -1) {
-			pt.x -= 4*Math.sin(Math.toRadians(degree));
-		 	pt.y -= 4*Math.cos(Math.toRadians(degree));
+			pt.x -= GameConstants.PLANESPEED*Math.sin(Math.toRadians(degree));
+		 	pt.y -= GameConstants.PLANESPEED*Math.cos(Math.toRadians(degree));
 		 	checkPt();
 		}
 	}
