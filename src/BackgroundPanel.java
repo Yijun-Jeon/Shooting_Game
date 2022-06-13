@@ -14,7 +14,6 @@ public class BackgroundPanel extends JPanel{
 	Image backgroundImg,logoImg, startImg,heartImg,scoreImg;
 	LabelThread lblStart;
 	JLabel lblScore;
-	Thread gameThread;
 	
 	Plane plane;
 	
@@ -22,6 +21,9 @@ public class BackgroundPanel extends JPanel{
 	int score;
 	int life;
 	int degree;
+	
+	Image dbImg;
+	Graphics dbPage;
 	
 	public BackgroundPanel() {
 		this.setPreferredSize(new Dimension(740,830));
@@ -53,30 +55,46 @@ public class BackgroundPanel extends JPanel{
 		plane = new Plane();
 
 		lblStart.start();
-		
-		gameThread = new Thread();
-		gameThread.start();
 	}
 
-	public void paintComponent(Graphics page) {
-		super.paintComponent(page);
-		page.drawImage(backgroundImg,0,0,null);
+	public void paint(Graphics page) {
+		if(dbPage == null) {
+			dbImg = createImage(this.getWidth(),this.getHeight());
+			dbPage = dbImg.getGraphics();
+		}
+		update(page);
+	}
+	public void update(Graphics page) {
+		if(dbPage == null)
+			return;
+		dbPaint();
+		paintComponents(dbPage);
+		page.drawImage(dbImg,0,0,null);
+	}
+	public void dbPaint() {
+		dbPage.drawImage(backgroundImg,0,0,null);
 		switch(status) {
 		case 0:
-			page.drawImage(logoImg,30,130,null);
+			dbPage.drawImage(logoImg,30,130,null);
 			break;
 		case 1:
-			for(int i=0;i<life;i++)
-				page.drawImage(heartImg,10 + 70*i,10,null);
-			page.drawImage(scoreImg,630,0,null);
-			plane.move(degree);
-			page.drawImage(Plane.planeImg.getImage(),plane.getX(),plane.getY(),null);
+			drawStage(dbPage);
+			drawPlane(dbPage);
 			break;
 		}
 	}
 	
 	public void addKeyController(KeyController key) {
 		this.addKeyListener(key);
+	}
+	private void drawStage(Graphics page) {
+		for(int i=0;i<life;i++)
+			page.drawImage(heartImg,10 + 70*i,10,null);
+		page.drawImage(scoreImg,630,0,null);
+	}
+	private void drawPlane(Graphics page) {
+		plane.move(degree);
+		page.drawImage(Plane.planeImg.getImage(),plane.getX(),plane.getY(),null);
 	}
 
 }
