@@ -1,15 +1,15 @@
 import java.awt.Point;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import java.util.LinkedList;
+import java.util.Queue;
 
-public class Plane extends JLabel {
+public class Plane{
 	
-	static ImageIcon planeImg = new ImageIcon("./img/plane.png");
 	private Point pt;
+	Queue<Bullet> bullets;
 	
 	public Plane() {
-		super(planeImg);
 		pt = new Point(315,740);
+		bullets = new LinkedList<Bullet>();
 	}
 	
 	public void setX(int x) {pt.x = x;}
@@ -23,8 +23,8 @@ public class Plane extends JLabel {
 	
 	public void move(int degree) {
 		if(degree != -1) {
-			pt.x -= 5*Math.sin(Math.toRadians(degree));
-		 	pt.y -= 5*Math.cos(Math.toRadians(degree));
+			pt.x -= 4*Math.sin(Math.toRadians(degree));
+		 	pt.y -= 4*Math.cos(Math.toRadians(degree));
 		 	checkPt();
 		}
 	}
@@ -37,5 +37,15 @@ public class Plane extends JLabel {
 			pt.y = 0;
 		else if(pt.y > 740)
 			pt.y = 740;
+	}
+	
+	public void shoot(boolean bShoot) {
+		if(bShoot)
+			bullets.offer(new Bullet(this));
+	}
+	public void dequeueBullet() {
+		if(!(bullets.isEmpty()))
+			if(bullets.peek().getY() < 0)
+				bullets.poll();
 	}
 }

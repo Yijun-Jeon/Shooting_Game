@@ -3,7 +3,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -11,7 +10,7 @@ import javax.swing.SwingConstants;
 
 public class BackgroundPanel extends JPanel{
 	
-	Image backgroundImg,logoImg, startImg,heartImg,scoreImg;
+	Image backgroundImg,logoImg, startImg,heartImg,scoreImg,bulletImg,planeImg;
 	LabelThread lblStart;
 	JLabel lblScore;
 	
@@ -25,6 +24,8 @@ public class BackgroundPanel extends JPanel{
 	Image dbImg;
 	Graphics dbPage;
 	
+	boolean bShoot;
+	
 	public BackgroundPanel() {
 		this.setPreferredSize(new Dimension(740,830));
 		setLayout(null);
@@ -33,6 +34,8 @@ public class BackgroundPanel extends JPanel{
 		life = 3;
 		
 		backgroundImg = new ImageIcon("./img/background.png").getImage();
+		bulletImg = new ImageIcon("./img/bullet.png").getImage();
+		planeImg = new ImageIcon("./img/plane.png").getImage();
 	
 		logoImg = new ImageIcon("./img/logo.png").getImage();
 		
@@ -54,6 +57,10 @@ public class BackgroundPanel extends JPanel{
 		
 		plane = new Plane();
 		lblStart.start();
+		
+		bulletImg = new ImageIcon("./img/bullet.png").getImage();
+		
+		bShoot = false;
 	}
 
 	public void paint(Graphics page) {
@@ -79,6 +86,10 @@ public class BackgroundPanel extends JPanel{
 		case 1:
 			drawStage(dbPage);
 			drawPlane(dbPage);
+			plane.shoot(bShoot);
+			bShoot = false;
+			drawBullet(dbPage);
+			drawBullet(dbPage);
 			break;
 		}
 	}
@@ -93,7 +104,13 @@ public class BackgroundPanel extends JPanel{
 	}
 	private void drawPlane(Graphics page) {
 		plane.move(degree);
-		page.drawImage(Plane.planeImg.getImage(),plane.getX(),plane.getY(),null);
+		page.drawImage(planeImg,plane.getX(),plane.getY(),null);	
 	}
-
+	private void drawBullet(Graphics page) {
+		for(Bullet bullet: plane.bullets) {
+			page.drawImage(bulletImg,bullet.getX(),bullet.getY(),null);
+			bullet.moveAhead();
+		}
+		plane.dequeueBullet();
+	}
 }

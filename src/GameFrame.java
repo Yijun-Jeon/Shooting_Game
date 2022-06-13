@@ -16,7 +16,7 @@ public class GameFrame extends JFrame implements Runnable{
 		getContentPane().add(panel);
 		setLocation(400, 0);
 
-		setResizable(false);	
+		setResizable(false);
 		pack();
 	}
 	

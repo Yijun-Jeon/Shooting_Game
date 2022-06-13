@@ -7,6 +7,7 @@ public class KeyController implements KeyListener{
 	public final static int DOWN	= 0x002;
 	public final static int LEFT	= 0x004;
 	public final static int RIGHT	= 0x008;
+	public final static int SHOOT	= 0x010;
 	
 	public final static int LEFTDEGREE 		= 90;
 	public final static int RIGHTDEGREE 	= 270;
@@ -45,6 +46,8 @@ public class KeyController implements KeyListener{
 			case KeyEvent.VK_DOWN:
 				keyBuff |= DOWN;
 				break;
+			case KeyEvent.VK_SPACE:
+				keyBuff |= SHOOT;
 			}
 		}else keyBuff = keyCode;
 	}
@@ -66,6 +69,10 @@ public class KeyController implements KeyListener{
 		case KeyEvent.VK_DOWN:
 			keyBuff &= ~DOWN;
 			break;
+		case KeyEvent.VK_SPACE:
+			keyBuff &= ~SHOOT;
+			panel.bShoot = true;
+			break;
 		}
 	}
 	
@@ -82,28 +89,39 @@ public class KeyController implements KeyListener{
 		case 1:
 			switch(keyBuff) {
 			case LEFT:
+			case LEFT | SHOOT:
 				panel.degree = LEFTDEGREE;
 				break;
 			case RIGHT:
+			case RIGHT | SHOOT:
 				panel.degree = RIGHTDEGREE;
 				break;
 			case UP:
+			case UP | SHOOT:
 				panel.degree = UPDEGREE;
 				break;
 			case DOWN:
+			case DOWN | SHOOT:
 				panel.degree = DOWNDEGREE;
 				break;
 			case LEFT | UP:
+			case LEFT | UP | SHOOT:
 				panel.degree = LEFTUPDEGREE;
 				break;
 			case RIGHT | UP:
+			case RIGHT | UP | SHOOT:
 				panel.degree = RIGHTUPDEGREE;
 				break;
 			case LEFT | DOWN:
+			case LEFT | DOWN | SHOOT:
 				panel.degree = LEFTDOWNDEGREE;
 				break;
 			case RIGHT | DOWN:
+			case RIGHT | DOWN | SHOOT:
 				panel.degree = RIGHTDOWNDEGREE;
+				break;
+			case SHOOT:
+				panel.degree = -1;
 				break;
 			default:
 				panel.degree = -1;
