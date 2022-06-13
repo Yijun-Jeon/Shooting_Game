@@ -2,69 +2,98 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-public class BackgroundPanel extends JPanel {
+public class BackgroundPanel extends JPanel{
 	
-	ImageIcon backgroundImg, startImg,heartImg,scoreImg;
-	JLabel lblLogo,lblHeart1,lblHeart2,lblHeart3,lblScore;
+	Image backgroundImg,logoImg, startImg,heartImg,scoreImg;
 	LabelThread lblStart;
+	JLabel lblScore;
 	
 	Plane plane;
 	
+	int status;
 	int score;
+	int life;
+	int degree;
+	
+	Image dbImg;
+	Graphics dbPage;
 	
 	public BackgroundPanel() {
 		this.setPreferredSize(new Dimension(740,830));
 		setLayout(null);
-		backgroundImg = new ImageIcon("./img/background.png");
+		
+		status = 0;
+		life = 3;
+		
+		backgroundImg = new ImageIcon("./img/background.png").getImage();
 	
-		lblLogo = new JLabel(new ImageIcon("./img/logo.png"));
-		lblLogo.setBounds(30, 130, 700, 100);
-		add(lblLogo);
+		logoImg = new ImageIcon("./img/logo.png").getImage();
 		
 		lblStart = new LabelThread(new ImageIcon("./img/start.png"));
 		lblStart.setBounds(120,500,500,200);
 		add(lblStart);
 		
-		heartImg = new ImageIcon("./img/heart.png");
-		lblHeart1 = new JLabel(heartImg);
-		lblHeart2 = new JLabel(heartImg);
-		lblHeart3 = new JLabel(heartImg);
-		lblHeart1.setBounds(10,10,70,60);
-		lblHeart2.setBounds(80,10,70,60);
-		lblHeart3.setBounds(150,10,70,60);
-		add(lblHeart1); add(lblHeart2); add(lblHeart3);
-		lblHeart1.setVisible(false); lblHeart2.setVisible(false); lblHeart3.setVisible(false);
+		heartImg = new ImageIcon("./img/heart.png").getImage();
 		
 		score = 0;
-		scoreImg = new ImageIcon("./img/score.png");
-		lblScore = new JLabel("0",scoreImg,SwingConstants.CENTER);
-		lblScore.setBounds(630,0,100,80);
-		lblScore.setVerticalTextPosition(SwingConstants.BOTTOM);
-		lblScore.setHorizontalTextPosition(SwingConstants.CENTER);
+		scoreImg = new ImageIcon("./img/score.png").getImage();
+		lblScore = new JLabel("0");
+		lblScore.setBounds(640,30,100,50);
 		lblScore.setFont(new Font("Verdana",Font.BOLD+Font.ITALIC,20));
+		lblScore.setHorizontalAlignment(SwingConstants.CENTER);
 		lblScore.setForeground(Color.BLUE);
-		add(lblScore);
 		lblScore.setVisible(false);
+		add(lblScore);
 		
 		plane = new Plane();
-		plane.setBounds(plane.getX(),plane.getY(),plane.planeImg.getIconWidth(),plane.planeImg.getIconHeight());
-		add(plane);
-		
 		lblStart.start();
 	}
 
-	public void paintComponent(Graphics page) {
-		super.paintComponent(page);
-		page.drawImage(backgroundImg.getImage(),0,0,null);
+	public void paint(Graphics page) {
+		if(dbPage == null) {
+			dbImg = createImage(this.getWidth(),this.getHeight());
+			dbPage = dbImg.getGraphics();
+		}
+		update(page);
+	}
+	public void update(Graphics page) {
+		if(dbPage == null)
+			return;
+		dbPaint();
+		paintComponents(dbPage);
+		page.drawImage(dbImg,0,0,null);
+	}
+	public void dbPaint() {
+		dbPage.drawImage(backgroundImg,0,0,null);
+		switch(status) {
+		case 0:
+			dbPage.drawImage(logoImg,30,130,null);
+			break;
+		case 1:
+			drawStage(dbPage);
+			drawPlane(dbPage);
+			break;
+		}
 	}
 	
 	public void addKeyController(KeyController key) {
 		this.addKeyListener(key);
 	}
+	private void drawStage(Graphics page) {
+		for(int i=0;i<life;i++)
+			page.drawImage(heartImg,10 + 70*i,10,null);
+		page.drawImage(scoreImg,630,0,null);
+	}
+	private void drawPlane(Graphics page) {
+		plane.move(degree);
+		page.drawImage(Plane.planeImg.getImage(),plane.getX(),plane.getY(),null);
+	}
+
 }
