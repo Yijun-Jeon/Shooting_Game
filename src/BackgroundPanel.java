@@ -69,7 +69,7 @@ public class BackgroundPanel extends JPanel{
 		
 		bShoot = false;
 		
-		enemyImg = new ImageIcon("./img/enemy2.png").getImage();
+		enemyImg = new ImageIcon("./img/enemy1.png").getImage();
 		
 		enemies = new Vector<Enemy>();
 		enemyTime = System.currentTimeMillis();
