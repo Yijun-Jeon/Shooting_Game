@@ -3,6 +3,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.Vector;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -10,7 +12,7 @@ import javax.swing.SwingConstants;
 
 public class BackgroundPanel extends JPanel{
 	
-	Image backgroundImg,logoImg, startImg,heartImg,scoreImg,bulletImg,planeImg;
+	Image backgroundImg,logoImg, startImg,heartImg,scoreImg,bulletImg,planeImg,enemyImg;
 	LabelThread lblStart;
 	JLabel lblScore;
 	
@@ -25,6 +27,11 @@ public class BackgroundPanel extends JPanel{
 	Graphics dbPage;
 	
 	boolean bShoot;
+	
+	Vector<Enemy> enemies;
+	long enemyTime;
+	int enemyTimeCnt;
+	int enemyNum;
 	
 	public BackgroundPanel() {
 		this.setPreferredSize(new Dimension(740,830));
@@ -61,6 +68,13 @@ public class BackgroundPanel extends JPanel{
 		bulletImg = new ImageIcon("./img/bullet.png").getImage();
 		
 		bShoot = false;
+		
+		enemyImg = new ImageIcon("./img/enemy2.png").getImage();
+		
+		enemies = new Vector<Enemy>();
+		enemyTime = System.currentTimeMillis();
+		enemyTimeCnt = 4;
+		enemyNum = 1;
 	}
 
 	public void paint(Graphics page) {
@@ -86,6 +100,8 @@ public class BackgroundPanel extends JPanel{
 		case 1:
 			drawStage(dbPage);
 			drawPlane(dbPage);
+			makeEnemy();
+			drawEnemy(dbPage);
 			plane.shoot(bShoot);
 			bShoot = false;
 			drawBullet(dbPage);
@@ -104,13 +120,27 @@ public class BackgroundPanel extends JPanel{
 	}
 	private void drawPlane(Graphics page) {
 		plane.move(degree);
-		page.drawImage(planeImg,plane.getX(),plane.getY(),null);	
-	}
+		page.drawImage(planeImg,plane.getX(),plane.getY(),null);
+;	}
 	private void drawBullet(Graphics page) {
 		for(Bullet bullet: plane.bullets) {
 			page.drawImage(bulletImg,bullet.getX(),bullet.getY(),null);
 			bullet.moveAhead();
 		}
 		plane.dequeueBullet();
+	}
+	private void makeEnemy() {
+		long time = System.currentTimeMillis();
+		if((time - enemyTime)/1000 >= enemyTimeCnt) {
+			enemies.add(new Enemy(enemyNum));
+			enemyTime = time;
+		}
+	}
+	private void drawEnemy(Graphics page) {
+		for(int i=0;i<enemies.size();i++) {
+			page.drawImage(enemyImg, enemies.elementAt(i).getX(), enemies.elementAt(i).getY(), null);
+			if(enemies.elementAt(i).moveDown())
+				enemies.remove(i);
+		}
 	}
 }
