@@ -5,7 +5,10 @@ public class Bullet {
 	private Point pt;
 	
 	public Bullet(Plane plane) {
-		pt = new Point(plane.getX() + 50, plane.getY() - 50);
+		pt = new Point(plane.getX() + 49, plane.getY() - 50);
+	}
+	public Bullet(Enemy enemy) {
+		pt = new Point(enemy.getX() + 37, enemy.getY() + 60);
 	}
 	
 	public void setX(int x) {pt.x = x;}
@@ -19,5 +22,8 @@ public class Bullet {
 	
 	public void moveAhead() {
 		setY(getY()-5);
+	}
+	public void moveDown() {
+		setY(getY()+2);
 	}
 }

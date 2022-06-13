@@ -12,7 +12,7 @@ import javax.swing.SwingConstants;
 
 public class BackgroundPanel extends JPanel{
 	
-	Image backgroundImg,logoImg, startImg,heartImg,scoreImg,bulletImg,planeImg,enemyImg;
+	Image backgroundImg,logoImg, startImg,heartImg,scoreImg,bulletImg,planeImg,enemyImg,bulletEImg;
 	LabelThread lblStart;
 	JLabel lblScore;
 	
@@ -32,6 +32,7 @@ public class BackgroundPanel extends JPanel{
 	long enemyTime;
 	int enemyTimeCnt;
 	int enemyNum;
+	
 	
 	public BackgroundPanel() {
 		this.setPreferredSize(new Dimension(740,830));
@@ -70,10 +71,11 @@ public class BackgroundPanel extends JPanel{
 		bShoot = false;
 		
 		enemyImg = new ImageIcon("./img/enemy1.png").getImage();
+		bulletEImg = new ImageIcon("./img/bulletE.png").getImage();
 		
 		enemies = new Vector<Enemy>();
 		enemyTime = System.currentTimeMillis();
-		enemyTimeCnt = 4;
+		enemyTimeCnt = 2;
 		enemyNum = 1;
 	}
 
@@ -105,7 +107,7 @@ public class BackgroundPanel extends JPanel{
 			plane.shoot(bShoot);
 			bShoot = false;
 			drawBullet(dbPage);
-			drawBullet(dbPage);
+			drawBulletE(dbPage);
 			break;
 		}
 	}
@@ -141,6 +143,16 @@ public class BackgroundPanel extends JPanel{
 			page.drawImage(enemyImg, enemies.elementAt(i).getX(), enemies.elementAt(i).getY(), null);
 			if(enemies.elementAt(i).moveDown())
 				enemies.remove(i);
+		}
+	}
+	private void drawBulletE(Graphics page) {
+		for(Enemy enemy: enemies) {
+			enemy.shoot();
+			for(Bullet bullet: enemy.bullets) {
+				page.drawImage(bulletEImg,bullet.getX(),bullet.getY(),null);
+				bullet.moveDown();
+			}
+			enemy.dequeueBullet();
 		}
 	}
 }
