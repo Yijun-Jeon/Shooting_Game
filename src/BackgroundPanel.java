@@ -125,6 +125,7 @@ public class BackgroundPanel extends JPanel{
 		for(int i=0;i<life;i++)
 			page.drawImage(heartImg,10 + 70*i,10,null);
 		page.drawImage(scoreImg,630,0,null);
+		lblScore.setText(score+"");
 	}
 	private void drawPlane(Graphics page) {
 		plane.move(degree);
@@ -161,6 +162,10 @@ public class BackgroundPanel extends JPanel{
 				for(int j=0;j<plane.bullets.size();j++) {
 					if(enemies.elementAt(i).getDamaged(plane.bullets.elementAt(j)))
 						plane.removeBullet(j);
+					if(enemies.elementAt(i).isEnemyDead()) {
+						score += 100;
+						break;
+					}
 				}
 				page.drawImage(enemyImg, enemies.elementAt(i).getX() - GameConstants.ENEMYIMGWIDTH/2, enemies.elementAt(i).getY() - GameConstants.ENEMYIMGHEIGHT/2, null);
 				if(plane.getDamaged(enemies.elementAt(i)) && !bDamaged)
@@ -194,11 +199,18 @@ public class BackgroundPanel extends JPanel{
 		}
 	}
 	public void initGame() {
-		plane.initPlane();
-		enemies.clear();
 		life = 3;
+		score = 0;
+		
 		status = 1;
 		damagedCnt = 0;
+		plane.initPlane();
+		
+		enemies.clear();
+		enemyTime = System.currentTimeMillis();
+		enemyNum = 1;
+		
+		bShoot = false;
 		lblScore.setVisible(true);
 		lblStart.setVisible(false);
 	}
