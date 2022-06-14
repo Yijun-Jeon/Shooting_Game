@@ -153,9 +153,19 @@ public class BackgroundPanel extends JPanel{
 	}
 	private void drawEnemy(Graphics page) {
 		for(int i=0;i<enemies.size();i++) {
-			page.drawImage(enemyImg, enemies.elementAt(i).getX() - GameConstants.ENEMYIMGWIDTH/2, enemies.elementAt(i).getY() - GameConstants.ENEMYIMGHEIGHT/2, null);
+			if(enemies.elementAt(i).isEnemyDead())
+				continue;
 			if(enemies.elementAt(i).moveDown())
 				enemies.remove(i);
+			else {
+				for(int j=0;j<plane.bullets.size();j++) {
+					if(enemies.elementAt(i).getDamaged(plane.bullets.elementAt(j)))
+						plane.removeBullet(j);
+				}
+				page.drawImage(enemyImg, enemies.elementAt(i).getX() - GameConstants.ENEMYIMGWIDTH/2, enemies.elementAt(i).getY() - GameConstants.ENEMYIMGHEIGHT/2, null);
+				if(plane.getDamaged(enemies.elementAt(i)) && !bDamaged)
+					planeDamaged();
+			}
 		}
 	}
 	private void drawBulletE(Graphics page) {
@@ -165,9 +175,7 @@ public class BackgroundPanel extends JPanel{
 				page.drawImage(bulletEImg,enemy.bullets.elementAt(i).getX()-GameConstants.ENEMYBULLETIMGWIDTH/2,enemy.bullets.elementAt(i).getY()-GameConstants.ENEMYBULLETIMGHIEHGT/2,null);
 				if(plane.getDamaged(enemy.bullets.elementAt(i)) && !bDamaged) {
 					enemy.removeBullet(i);
-					bDamaged = true;
-					damagedCnt = 120;
-					life--;
+					planeDamaged();
 				}
 				else if((enemy.bullets.elementAt(i).moveDown()))
 					enemy.removeBullet(i);
@@ -190,7 +198,13 @@ public class BackgroundPanel extends JPanel{
 		enemies.clear();
 		life = 3;
 		status = 1;
+		damagedCnt = 0;
 		lblScore.setVisible(true);
 		lblStart.setVisible(false);
+	}
+	public void planeDamaged() {
+		bDamaged = true;
+		damagedCnt = 120;
+		life--;
 	}
 }

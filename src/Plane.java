@@ -62,4 +62,9 @@ public class Plane{
 			return true;
 		return false;
 	}
+	public boolean getDamaged(Enemy enemy) {
+		if(getDistance(pt,enemy.getPt()) < damageDistance)
+			return true;
+		return false;
+	}
 }

@@ -9,6 +9,9 @@ public class Enemy {
 	int enemyNum;
 	Vector<Bullet> bullets;
 	long shootTime;
+	int life;
+	int damageDistance;
+	boolean isDead;
 	
 	public Enemy(int num) {
 		pt = new Point((int)(Math.random()*(GameConstants.GAMEBOARDWIDTH - GameConstants.ENEMYIMGWIDTH)) + GameConstants.ENEMYIMGWIDTH/2,GameConstants.ENEMYIMGHEIGHT/2);
@@ -16,6 +19,9 @@ public class Enemy {
 		bullets = new Vector<Bullet>();
 		bullets.add(new Bullet(this));
 		shootTime = System.currentTimeMillis();
+		life = 3;
+		damageDistance = GameConstants.ENEMYIMGHEIGHT/2;
+		isDead = false;
 	}
 	
 	public void setX(int x) {pt.x = x;}
@@ -36,17 +42,32 @@ public class Enemy {
 		setY(getY()+GameConstants.ENEMYDOWNSPEED);
 		return getY() > GameConstants.GAMEBOARDHEIGHT;
 	}
+	public static int getDistance(Point a, Point b) {
+		return (int)Math.sqrt((a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y));
+	}
 	
 	public void shoot() {
 		long time = System.currentTimeMillis();
-		if((time-shootTime)/1000 >= GameConstants.ENEMYSHOOTTERM) {
+		if(!isDead && (time-shootTime)/1000 >= GameConstants.ENEMYSHOOTTERM) {
 			bullets.add(new Bullet(this));
 			shootTime = time;
 		}
+	}
+	public boolean isEnemyDead() {
+		if(life <= 0)
+			isDead = true;
+		return isDead;
 	}
 	public void removeBullet(int index) {
 		try {
 			bullets.remove(index);
 		}catch(Exception e) {return;}
+	}
+	public boolean getDamaged(Bullet bullet) {
+		if(getDistance(pt,bullet.getPt()) < damageDistance) {
+			life--;
+			return true;
+		}
+		return false;
 	}
 }
