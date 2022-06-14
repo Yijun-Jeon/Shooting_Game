@@ -20,4 +20,9 @@ public class GameConstants {
 	public static final int PLANEBULLETSPEED = 5;	
 	public static final int PLANEBULLETIMGWIDTH = 18;
 	public static final int PLANEBULLETIMGHEIGHT = 61;
+	
+	public static final int EFFECTDEADIMGWIDTH = 46;
+	public static final int EFFECTDEADIMGHEIGHT = 47;
+	public static final int EFFECTDAMAGEDIMGWIDTH = 61;
+	public static final int EFFECTDAMAGEDIMGHEIGHT = 47;
 }

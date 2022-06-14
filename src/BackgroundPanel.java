@@ -3,6 +3,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -12,7 +13,9 @@ import javax.swing.SwingConstants;
 
 public class BackgroundPanel extends JPanel{
 	
-	Image backgroundImg,logoImg,heartImg,scoreImg,bulletImg,planeImg,enemyImg,bulletEImg;
+	Image backgroundImg,logoImg,heartImg,scoreImg,
+		  bulletImg,planeImg,enemyImg,bulletEImg,
+		  effectDeadImg,effectDamagedImg,effectImg;
 	ImageIcon startImg;
 	LabelThread lblStart;
 	JLabel lblScore;
@@ -34,6 +37,9 @@ public class BackgroundPanel extends JPanel{
 	Vector<Enemy> enemies;
 	long enemyTime;
 	int enemyNum;
+	
+	Vector<Effect> effects;
+	int cnt;
 	
 	
 	public BackgroundPanel() {
@@ -82,6 +88,11 @@ public class BackgroundPanel extends JPanel{
 		
 		damagedCnt = 0;
 		bDamaged = false;
+		
+		effects = new Vector<Effect>();
+		effectDeadImg = new ImageIcon("./img/effectDead.png").getImage();
+		effectDamagedImg = new ImageIcon("./img/effectDamaged.png").getImage();
+		effectImg = new ImageIcon("./img/effect.png").getImage();
 	}
 
 	public void paint(Graphics page) {
