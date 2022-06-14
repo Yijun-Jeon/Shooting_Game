@@ -22,6 +22,7 @@ public class BackgroundPanel extends JPanel{
 	int score;
 	int life;
 	int degree;
+	int cnt;
 	
 	Image dbImg;
 	Graphics dbPage;
@@ -34,7 +35,7 @@ public class BackgroundPanel extends JPanel{
 	
 	
 	public BackgroundPanel() {
-		this.setPreferredSize(new Dimension(740,830));
+		this.setPreferredSize(new Dimension(GameConstants.GAMEBOARDWIDTH,GameConstants.GAMEBOARDHEIGHT));
 		setLayout(null);
 		
 		status = 0;
@@ -75,6 +76,8 @@ public class BackgroundPanel extends JPanel{
 		enemies = new Vector<Enemy>();
 		enemyTime = System.currentTimeMillis();
 		enemyNum = 1;
+		
+		cnt = 0;
 	}
 
 	public void paint(Graphics page) {
@@ -120,11 +123,11 @@ public class BackgroundPanel extends JPanel{
 	}
 	private void drawPlane(Graphics page) {
 		plane.move(degree);
-		page.drawImage(planeImg,plane.getX(),plane.getY(),null);
+		page.drawImage(planeImg,plane.getX()-GameConstants.PLANEIMGWIDTH/2, plane.getY()-GameConstants.PLANEIMGHEIGHT/2,null);
 ;	}
 	private void drawBullet(Graphics page) {
 		for(Bullet bullet: plane.bullets) {
-			page.drawImage(bulletImg,bullet.getX(),bullet.getY(),null);
+			page.drawImage(bulletImg,bullet.getX()-GameConstants.PLANEBULLETIMGWIDTH/2,bullet.getY()-GameConstants.PLANEBULLETIMGHEIGHT/2,null);
 			bullet.moveAhead();
 		}
 		plane.dequeueBullet();
@@ -138,7 +141,7 @@ public class BackgroundPanel extends JPanel{
 	}
 	private void drawEnemy(Graphics page) {
 		for(int i=0;i<enemies.size();i++) {
-			page.drawImage(enemyImg, enemies.elementAt(i).getX(), enemies.elementAt(i).getY(), null);
+			page.drawImage(enemyImg, enemies.elementAt(i).getX() - GameConstants.ENEMYIMGWIDTH/2, enemies.elementAt(i).getY() - GameConstants.ENEMYIMGHEIGHT/2, null);
 			if(enemies.elementAt(i).moveDown())
 				enemies.remove(i);
 		}
@@ -147,7 +150,7 @@ public class BackgroundPanel extends JPanel{
 		for(Enemy enemy: enemies) {
 			enemy.shoot();
 			for(Bullet bullet: enemy.bullets) {
-				page.drawImage(bulletEImg,bullet.getX(),bullet.getY(),null);
+				page.drawImage(bulletEImg,bullet.getX()-GameConstants.ENEMYBULLETIMGWIDTH/2,bullet.getY()-GameConstants.ENEMYBULLETIMGHIEHGT/2,null);
 				bullet.moveDown();
 			}
 			enemy.dequeueBullet();

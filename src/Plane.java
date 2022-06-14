@@ -1,6 +1,9 @@
+import java.awt.Image;
 import java.awt.Point;
 import java.util.LinkedList;
 import java.util.Queue;
+
+import javax.swing.ImageIcon;
 
 public class Plane{
 	
@@ -8,7 +11,7 @@ public class Plane{
 	Queue<Bullet> bullets;
 	
 	public Plane() {
-		pt = new Point(315,740);
+		pt = new Point(GameConstants.GAMEBOARDWIDTH/2,GameConstants.GAMEBOARDHEIGHT - GameConstants.PLANEIMGHEIGHT/2);
 		bullets = new LinkedList<Bullet>();
 	}
 	
@@ -29,14 +32,17 @@ public class Plane{
 		}
 	}
 	private void checkPt() {
-		if(pt.x < 0)
-			pt.x = 0;
-		else if(pt.x > 625)
-			pt.x = 625;
-		if(pt.y < 0)
-			pt.y = 0;
-		else if(pt.y > 740)
-			pt.y = 740;
+		if(pt.x < GameConstants.PLANEIMGWIDTH/2)
+			pt.x = GameConstants.PLANEIMGWIDTH/2;
+		else if(pt.x > GameConstants.GAMEBOARDWIDTH - GameConstants.PLANEIMGWIDTH/2)
+			pt.x = GameConstants.GAMEBOARDWIDTH - GameConstants.PLANEIMGWIDTH/2;
+		if(pt.y < GameConstants.PLANEIMGHEIGHT/2)
+			pt.y = GameConstants.PLANEIMGHEIGHT/2;
+		else if(pt.y > GameConstants.GAMEBOARDHEIGHT - GameConstants.PLANEIMGHEIGHT/2)
+			pt.y = GameConstants.GAMEBOARDHEIGHT - GameConstants.PLANEIMGHEIGHT/2;
+	}
+	public static int getDistance(Point a, Point b) {
+		return (int)Math.sqrt((a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y));
 	}
 	
 	public void shoot(boolean bShoot) {

@@ -10,7 +10,7 @@ public class Enemy {
 	long shootTime;
 	
 	public Enemy(int num) {
-		pt = new Point((int)(Math.random()*625),0);
+		pt = new Point((int)(Math.random()*(GameConstants.GAMEBOARDWIDTH - GameConstants.ENEMYIMGWIDTH)) + GameConstants.ENEMYIMGWIDTH/2,GameConstants.ENEMYIMGHEIGHT/2);
 		enemyNum = num;
 		bullets = new LinkedList<Bullet>();
 		bullets.offer(new Bullet(this));
@@ -28,7 +28,7 @@ public class Enemy {
 	
 	public boolean moveDown() {
 		setY(getY()+GameConstants.ENEMYDOWNSPEED);
-		return getY() > 830;
+		return getY() > GameConstants.GAMEBOARDHEIGHT;
 	}
 	
 	public void shoot() {

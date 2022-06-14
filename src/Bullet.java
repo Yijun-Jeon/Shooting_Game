@@ -5,10 +5,10 @@ public class Bullet {
 	private Point pt;
 	
 	public Bullet(Plane plane) {
-		pt = new Point(plane.getX() + 49, plane.getY() - 50);
+		pt = new Point(plane.getX(), plane.getY()-GameConstants.PLANEIMGHEIGHT/2);
 	}
 	public Bullet(Enemy enemy) {
-		pt = new Point(enemy.getX() + 37, enemy.getY() + 60);
+		pt = new Point(enemy.getX(), enemy.getY()+GameConstants.ENEMYIMGHEIGHT/2);
 	}
 	
 	public void setX(int x) {pt.x = x;}
