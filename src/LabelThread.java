@@ -3,12 +3,10 @@ import javax.swing.JLabel;
 
 public class LabelThread extends JLabel implements Runnable {
 	
-	private Thread lblThread;
-	private boolean bRun;
+	Thread lblThread;
 	
 	public LabelThread(ImageIcon img) {
 		super(img);
-		bRun = true;
 	}
 	
 	public void start() {
@@ -17,11 +15,9 @@ public class LabelThread extends JLabel implements Runnable {
 		lblThread.start();
 	}
 	
-	public void setRun(boolean b) {bRun = b;}
-	
 	@Override
 	public void run() {
-		while(bRun) {
+		while(!lblThread.isInterrupted()) {
 			this.setVisible(false);
 			try {
 				lblThread.sleep(100);
@@ -31,7 +27,5 @@ public class LabelThread extends JLabel implements Runnable {
 				lblThread.sleep(100);
 			}catch(Exception e) {return;}
 		}
-		this.setVisible(false);
-		bRun = true;
 	}
 }

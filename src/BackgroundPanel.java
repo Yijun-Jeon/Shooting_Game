@@ -12,7 +12,8 @@ import javax.swing.SwingConstants;
 
 public class BackgroundPanel extends JPanel{
 	
-	Image backgroundImg,logoImg, startImg,heartImg,scoreImg,bulletImg,planeImg,enemyImg,bulletEImg;
+	Image backgroundImg,logoImg,heartImg,scoreImg,bulletImg,planeImg,enemyImg,bulletEImg;
+	ImageIcon startImg;
 	LabelThread lblStart;
 	JLabel lblScore;
 	
@@ -43,12 +44,13 @@ public class BackgroundPanel extends JPanel{
 		life = 3;
 		
 		backgroundImg = new ImageIcon("./img/background.png").getImage();
+		startImg = new ImageIcon("./img/start.png");
 		bulletImg = new ImageIcon("./img/bullet.png").getImage();
 		planeImg = new ImageIcon("./img/plane.png").getImage();
 	
 		logoImg = new ImageIcon("./img/logo.png").getImage();
 		
-		lblStart = new LabelThread(new ImageIcon("./img/start.png"));
+		lblStart = new LabelThread(startImg);
 		lblStart.setBounds(120,500,500,200);
 		add(lblStart);
 		
@@ -111,6 +113,7 @@ public class BackgroundPanel extends JPanel{
 			bShoot = false;
 			drawBullet(dbPage);
 			drawBulletE(dbPage);
+			checkGameOver();
 			break;
 		}
 	}
@@ -169,6 +172,18 @@ public class BackgroundPanel extends JPanel{
 				else if((enemy.bullets.elementAt(i).moveDown()))
 					enemy.removeBullet(i);
 			}
+		}
+	}
+	private void checkGameOver() {
+		if(life < 0) {
+			status = 0;
+			life = 3;
+			lblScore.setVisible(false);
+			
+			lblStart = new LabelThread(startImg);
+			lblStart.setBounds(120,500,500,200);
+			add(lblStart);
+			lblStart.start();
 		}
 	}
 }
