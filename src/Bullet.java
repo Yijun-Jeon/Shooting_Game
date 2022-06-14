@@ -20,10 +20,12 @@ public class Bullet {
 	public int getY() {return pt.y;}
 	public Point getPt() {return pt;}
 	
-	public void moveAhead() {
+	public boolean moveAhead() {
 		setY(getY()-GameConstants.PLANEBULLETSPEED);
+		return getY() < 0;
 	}
-	public void moveDown() {
+	public boolean moveDown() {
 		setY(getY()+GameConstants.ENEMYBULLETSPEED);
+		return getY() > GameConstants.GAMEBOARDHEIGHT;
 	}
 }

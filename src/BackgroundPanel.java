@@ -22,12 +22,13 @@ public class BackgroundPanel extends JPanel{
 	int score;
 	int life;
 	int degree;
-	int cnt;
+	int damagedCnt;
 	
 	Image dbImg;
 	Graphics dbPage;
 	
 	boolean bShoot;
+	boolean bDamaged;
 	
 	Vector<Enemy> enemies;
 	long enemyTime;
@@ -77,7 +78,8 @@ public class BackgroundPanel extends JPanel{
 		enemyTime = System.currentTimeMillis();
 		enemyNum = 1;
 		
-		cnt = 0;
+		damagedCnt = 0;
+		bDamaged = false;
 	}
 
 	public void paint(Graphics page) {
@@ -123,14 +125,21 @@ public class BackgroundPanel extends JPanel{
 	}
 	private void drawPlane(Graphics page) {
 		plane.move(degree);
-		page.drawImage(planeImg,plane.getX()-GameConstants.PLANEIMGWIDTH/2, plane.getY()-GameConstants.PLANEIMGHEIGHT/2,null);
+		if(bDamaged) {
+			if(damagedCnt == 0)
+				bDamaged = false;
+			else if(damagedCnt-- % 3 == 0)
+				page.drawImage(planeImg,plane.getX()-GameConstants.PLANEIMGWIDTH/2, plane.getY()-GameConstants.PLANEIMGHEIGHT/2,null);
+		}
+		else
+			page.drawImage(planeImg,plane.getX()-GameConstants.PLANEIMGWIDTH/2, plane.getY()-GameConstants.PLANEIMGHEIGHT/2,null);
 ;	}
 	private void drawBullet(Graphics page) {
-		for(Bullet bullet: plane.bullets) {
-			page.drawImage(bulletImg,bullet.getX()-GameConstants.PLANEBULLETIMGWIDTH/2,bullet.getY()-GameConstants.PLANEBULLETIMGHEIGHT/2,null);
-			bullet.moveAhead();
+		for(int i=0; i<plane.bullets.size();i++) {
+			page.drawImage(bulletImg,plane.bullets.elementAt(i).getX()-GameConstants.PLANEBULLETIMGWIDTH/2,plane.bullets.elementAt(i).getY()-GameConstants.PLANEBULLETIMGHEIGHT/2,null);
+			if(plane.bullets.elementAt(i).moveAhead())
+				plane.removeBullet(i);
 		}
-		plane.dequeueBullet();
 	}
 	private void makeEnemy() {
 		long time = System.currentTimeMillis();
@@ -149,11 +158,17 @@ public class BackgroundPanel extends JPanel{
 	private void drawBulletE(Graphics page) {
 		for(Enemy enemy: enemies) {
 			enemy.shoot();
-			for(Bullet bullet: enemy.bullets) {
-				page.drawImage(bulletEImg,bullet.getX()-GameConstants.ENEMYBULLETIMGWIDTH/2,bullet.getY()-GameConstants.ENEMYBULLETIMGHIEHGT/2,null);
-				bullet.moveDown();
+			for(int i=0; i< enemy.bullets.size();i++) {
+				page.drawImage(bulletEImg,enemy.bullets.elementAt(i).getX()-GameConstants.ENEMYBULLETIMGWIDTH/2,enemy.bullets.elementAt(i).getY()-GameConstants.ENEMYBULLETIMGHIEHGT/2,null);
+				if(plane.getDamaged(enemy.bullets.elementAt(i))) {
+					enemy.removeBullet(i);
+					bDamaged = true;
+					damagedCnt = 90;
+					life--;
+				}
+				else if((enemy.bullets.elementAt(i).moveDown()))
+					enemy.removeBullet(i);
 			}
-			enemy.dequeueBullet();
 		}
 	}
 }

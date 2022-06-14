@@ -1,19 +1,20 @@
 import java.awt.Point;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Vector;
 
 public class Enemy {
 	
 	Point pt;
 	int enemyNum;
-	Queue<Bullet> bullets;
+	Vector<Bullet> bullets;
 	long shootTime;
 	
 	public Enemy(int num) {
 		pt = new Point((int)(Math.random()*(GameConstants.GAMEBOARDWIDTH - GameConstants.ENEMYIMGWIDTH)) + GameConstants.ENEMYIMGWIDTH/2,GameConstants.ENEMYIMGHEIGHT/2);
 		enemyNum = num;
-		bullets = new LinkedList<Bullet>();
-		bullets.offer(new Bullet(this));
+		bullets = new Vector<Bullet>();
+		bullets.add(new Bullet(this));
 		shootTime = System.currentTimeMillis();
 	}
 	
@@ -34,14 +35,13 @@ public class Enemy {
 	public void shoot() {
 		long time = System.currentTimeMillis();
 		if((time-shootTime)/1000 >= GameConstants.ENEMYSHOOTTERM) {
-			bullets.offer(new Bullet(this));
+			bullets.add(new Bullet(this));
 			shootTime = time;
 		}
 	}
-	public void dequeueBullet() {
-		if(!(bullets.isEmpty()))
-			if(bullets.peek().getY() < 0)
-				bullets.poll();
+	public void removeBullet(int index) {
+		try {
+			bullets.remove(index);
+		}catch(Exception e) {return;}
 	}
-	
 }

@@ -1,18 +1,16 @@
-import java.awt.Image;
 import java.awt.Point;
-import java.util.LinkedList;
-import java.util.Queue;
-
-import javax.swing.ImageIcon;
+import java.util.Vector;
 
 public class Plane{
 	
 	private Point pt;
-	Queue<Bullet> bullets;
+	Vector<Bullet> bullets;
+	private int damageDistance;
 	
 	public Plane() {
 		pt = new Point(GameConstants.GAMEBOARDWIDTH/2,GameConstants.GAMEBOARDHEIGHT - GameConstants.PLANEIMGHEIGHT/2);
-		bullets = new LinkedList<Bullet>();
+		bullets = new Vector<Bullet>();
+		damageDistance = GameConstants.PLANEIMGHEIGHT/2;
 	}
 	
 	public void setX(int x) {pt.x = x;}
@@ -47,11 +45,16 @@ public class Plane{
 	
 	public void shoot(boolean bShoot) {
 		if(bShoot)
-			bullets.offer(new Bullet(this));
+			bullets.add(new Bullet(this));
 	}
-	public void dequeueBullet() {
-		if(!(bullets.isEmpty()))
-			if(bullets.peek().getY() < 0)
-				bullets.poll();
+	public void removeBullet(int index) {
+		try {
+			bullets.remove(index);
+		}catch(Exception e) {return;}
+	}
+	public boolean getDamaged(Bullet bullet) {
+		if(getDistance(pt,bullet.getPt()) < damageDistance)
+			return true;
+		return false;
 	}
 }
