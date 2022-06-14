@@ -22,6 +22,11 @@ public class Plane{
 	public int getY() {return pt.y;}
 	public Point getPt() {return pt;}
 	
+	public void initPlane() {
+		setPt(new Point(GameConstants.GAMEBOARDWIDTH/2,GameConstants.GAMEBOARDHEIGHT - GameConstants.PLANEIMGHEIGHT/2));
+		bullets.clear();
+	}
+	
 	public void move(int degree) {
 		if(degree != -1) {
 			pt.x -= GameConstants.PLANESPEED*Math.sin(Math.toRadians(degree));

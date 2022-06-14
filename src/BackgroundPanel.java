@@ -163,10 +163,10 @@ public class BackgroundPanel extends JPanel{
 			enemy.shoot();
 			for(int i=0; i< enemy.bullets.size();i++) {
 				page.drawImage(bulletEImg,enemy.bullets.elementAt(i).getX()-GameConstants.ENEMYBULLETIMGWIDTH/2,enemy.bullets.elementAt(i).getY()-GameConstants.ENEMYBULLETIMGHIEHGT/2,null);
-				if(plane.getDamaged(enemy.bullets.elementAt(i))) {
+				if(plane.getDamaged(enemy.bullets.elementAt(i)) && !bDamaged) {
 					enemy.removeBullet(i);
 					bDamaged = true;
-					damagedCnt = 90;
+					damagedCnt = 120;
 					life--;
 				}
 				else if((enemy.bullets.elementAt(i).moveDown()))
@@ -177,7 +177,6 @@ public class BackgroundPanel extends JPanel{
 	private void checkGameOver() {
 		if(life < 0) {
 			status = 0;
-			life = 3;
 			lblScore.setVisible(false);
 			
 			lblStart = new LabelThread(startImg);
@@ -185,5 +184,13 @@ public class BackgroundPanel extends JPanel{
 			add(lblStart);
 			lblStart.start();
 		}
+	}
+	public void initGame() {
+		plane.initPlane();
+		enemies.clear();
+		life = 3;
+		status = 1;
+		lblScore.setVisible(true);
+		lblStart.setVisible(false);
 	}
 }

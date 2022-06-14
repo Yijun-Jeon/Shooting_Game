@@ -80,10 +80,8 @@ public class KeyController implements KeyListener{
 		switch(panel.status) {
 		case 0:
 			if(keyBuff == KeyEvent.VK_ENTER) {
-				panel.lblScore.setVisible(true);
 				panel.lblStart.lblThread.interrupt();
-				panel.lblStart.setVisible(false);
-				panel.status = 1;
+				panel.initGame();
 				keyBuff = 0;
 			}
 			break;

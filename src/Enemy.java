@@ -27,6 +27,11 @@ public class Enemy {
 	public int getY() {return pt.y;}
 	public Point getPt() {return pt;}
 	
+	public void initEnemy() {
+		setY(GameConstants.ENEMYIMGHEIGHT/2);
+		bullets.clear();
+	}
+	
 	public boolean moveDown() {
 		setY(getY()+GameConstants.ENEMYDOWNSPEED);
 		return getY() > GameConstants.GAMEBOARDHEIGHT;
