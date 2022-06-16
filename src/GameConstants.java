@@ -23,4 +23,8 @@ public class GameConstants {
 	
 	public static final int EFFECTIMGWIDTH = 64;
 	public static final int EFFECTIMGHEIGHT = 64;
+	
+	public static final int ITEMIMGWIDTH = 36;
+	public static final int ITEMIMGHEIGHT = 36;
+	public static final int ITEMDOWNSPEED = 1;
 }

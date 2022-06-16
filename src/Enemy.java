@@ -70,4 +70,15 @@ public class Enemy {
 		}
 		return false;
 	}
+	public void makeItem(Vector<Item> items) {
+		int random = (int)(Math.random()*100);
+		if(random > 90) {
+			Item item = new Item(this.getPt(),2);
+			items.add(item);
+		}
+		else if(random > 70) {
+			Item item = new Item(this.getPt(),1);
+			items.add(item);
+		}
+	}
 }

@@ -1,16 +1,14 @@
 import java.awt.Point;
 
-public class Effect {
+public class Item {
 	private Point pt;
 	private int cnt;
-	private int type; // Dead || Damaged
-	private boolean bDecre;
+	private int type;
 	
-	public Effect(Point point,int type){
+	public Item(Point point,int type){
 		pt=new Point(point);
-		cnt = 31;
+		cnt = 0;
 		this.type = type;
-		bDecre = false;
 	}
 	
 	public void setX(int x) {pt.x = x;}
@@ -21,12 +19,14 @@ public class Effect {
 	public int getX() {return pt.x;}
 	public int getY() {return pt.y;}
 	public Point getPt() {return pt;}
-	public int getCnt() {return (cnt/8) % 4;}
 	public int getType() {return type;}
 	
-	public boolean decreCnt() {
-		if(bDecre) --cnt;
-		else bDecre = true;
-		return cnt == -1;
+	public int getCnt(){
+		cnt = ++cnt%91;
+		return cnt/13;
+	}
+	public boolean moveDown() {
+		setY(getY()+GameConstants.ITEMDOWNSPEED);
+		return getY() > GameConstants.GAMEBOARDHEIGHT;
 	}
 }

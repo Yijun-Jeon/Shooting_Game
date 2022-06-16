@@ -7,12 +7,14 @@ public class Plane{
 	Vector<Bullet> bullets;
 	private int damageDistance;
 	private int bulletNum;
+	private int life;
 	
 	public Plane() {
 		pt = new Point(GameConstants.GAMEBOARDWIDTH/2,GameConstants.GAMEBOARDHEIGHT - GameConstants.PLANEIMGHEIGHT/2);
 		bullets = new Vector<Bullet>();
 		damageDistance = GameConstants.PLANEIMGHEIGHT/2;
 		bulletNum = 1;
+		life = 3;
 	}
 	
 	public void setX(int x) {pt.x = x;}
@@ -23,9 +25,12 @@ public class Plane{
 	public int getX() {return pt.x;}
 	public int getY() {return pt.y;}
 	public Point getPt() {return pt;}
+	public int getLife() {return life;}
 	
 	public void initPlane() {
 		setPt(new Point(GameConstants.GAMEBOARDWIDTH/2,GameConstants.GAMEBOARDHEIGHT - GameConstants.PLANEIMGHEIGHT/2));
+		life = 3;
+		bulletNum = 1;
 		bullets.clear();
 	}
 	
@@ -95,5 +100,25 @@ public class Plane{
 				bulletNum++;
 		}
 		else bulletNum = 1; 
+	}
+	public void increLife() {
+		life = life == 5 ? 5 : ++life;
+	}
+	public void decreLife() {
+		--life;
+	}
+	public boolean takeItem(Item item) {
+		if(getDistance(pt,item.getPt()) < damageDistance) {
+			switch(item.getType()) {
+			case 1:
+				increBulletNum(false);
+				break;
+			case 2:
+				increLife();
+				break;
+			}
+			return true;
+		}
+		return false;
 	}
 }

@@ -72,7 +72,6 @@ public class KeyController implements KeyListener{
 		case KeyEvent.VK_SPACE:
 			keyBuff &= ~SHOOT;
 			panel.bShoot = true;
-			panel.plane.increBulletNum(false);
 			break;
 		}
 	}

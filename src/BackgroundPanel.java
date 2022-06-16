@@ -3,6 +3,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -13,7 +14,7 @@ public class BackgroundPanel extends JPanel{
 	
 	Image backgroundImg,logoImg,heartImg,scoreImg,
 		  bulletImg,planeImg,enemyImg,bulletEImg,
-		  effectImg;
+		  effectImg,itemHeartImg,itemBulletImg;
 	ImageIcon startImg;
 	LabelThread lblStart;
 	JLabel lblScore;
@@ -22,7 +23,6 @@ public class BackgroundPanel extends JPanel{
 	
 	int status;
 	int score;
-	int life;
 	int degree;
 	int damagedCnt;
 	
@@ -39,13 +39,14 @@ public class BackgroundPanel extends JPanel{
 	Vector<Effect> effects;
 	int cnt;
 	
+	Vector<Item> items;
+	
 	
 	public BackgroundPanel() {
 		this.setPreferredSize(new Dimension(GameConstants.GAMEBOARDWIDTH,GameConstants.GAMEBOARDHEIGHT));
 		setLayout(null);
 		
 		status = 0;
-		life = 3;
 		
 		backgroundImg = new ImageIcon("./img/background.png").getImage();
 		startImg = new ImageIcon("./img/start.png");
@@ -89,6 +90,15 @@ public class BackgroundPanel extends JPanel{
 		
 		effects = new Vector<Effect>();
 		effectImg = new ImageIcon("./img/effect.png").getImage();
+		
+		itemBulletImg = new ImageIcon("./img/itemBullet.png").getImage();
+		itemHeartImg = new ImageIcon("./img/itemHeart.png").getImage();
+		
+		items = new Vector<Item>();
+		items.add(new Item(new Point(400,400),2));
+		items.add(new Item(new Point(200,200),2));
+		items.add(new Item(new Point(300,300),2));
+		items.add(new Item(new Point(200,200),2));
 	}
 
 	public void paint(Graphics page) {
@@ -121,6 +131,7 @@ public class BackgroundPanel extends JPanel{
 			drawBullet(dbPage);
 			drawBulletE(dbPage);
 			drawEffect(dbPage);
+			drawItem(dbPage);
 			checkGameOver();
 			break;
 		}
@@ -130,7 +141,7 @@ public class BackgroundPanel extends JPanel{
 		this.addKeyListener(key);
 	}
 	private void drawStage(Graphics page) {
-		for(int i=0;i<life;i++)
+		for(int i=0;i<plane.getLife();i++)
 			page.drawImage(heartImg,10 + 70*i,10,null);
 		page.drawImage(scoreImg,630,0,null);
 		lblScore.setText(score+"");
@@ -176,6 +187,7 @@ public class BackgroundPanel extends JPanel{
 							score += 100;
 							effects.add(new Effect(enemy.getPt(),1));
 							plane.removeBullet(j);
+							enemy.makeItem(items);
 							break;
 						}
 						effects.add(new Effect(bullet.getPt(),2));
@@ -206,7 +218,7 @@ public class BackgroundPanel extends JPanel{
 		}
 	}
 	private void checkGameOver() {
-		if(life < 0) {
+		if(plane.getLife() < 0) {
 			status = 0;
 			lblScore.setVisible(false);
 			lblStart = new LabelThread(startImg);
@@ -216,7 +228,6 @@ public class BackgroundPanel extends JPanel{
 		}
 	}
 	public void initGame() {
-		life = 3;
 		score = 0;
 		
 		status = 1;
@@ -236,7 +247,7 @@ public class BackgroundPanel extends JPanel{
 	public void planeDamaged() {
 		bDamaged = true;
 		damagedCnt = 120;
-		life--;
+		plane.decreLife();
 		plane.increBulletNum(bDamaged);
 	}
 	public void drawEffect(Graphics page) {
@@ -248,6 +259,23 @@ public class BackgroundPanel extends JPanel{
 					effect.getY() - effect.getType()*GameConstants.EFFECTIMGHEIGHT,null);
 			if(effect.decreCnt())
 				effects.remove(i--);
+		}
+		page.setClip(0,0,GameConstants.GAMEBOARDWIDTH,GameConstants.GAMEBOARDHEIGHT);
+	}
+	public void drawItem(Graphics page) {
+		for(int i=0;i<items.size();i++) {
+			Item item = items.elementAt(i);
+			page.setClip(item.getX(), item.getY(), GameConstants.ITEMIMGWIDTH, GameConstants.ITEMIMGHEIGHT);
+			switch(item.getType()) {
+			case 1:
+				page.drawImage(itemBulletImg, item.getX() - item.getCnt()*GameConstants.ITEMIMGWIDTH, item.getY(), null);
+				break;
+			case 2:
+				page.drawImage(itemHeartImg, item.getX() - item.getCnt()*GameConstants.ITEMIMGWIDTH, item.getY(), null);
+				break;
+			}
+			if(item.moveDown() || plane.takeItem(item))
+				items.remove(i);
 		}
 		page.setClip(0,0,GameConstants.GAMEBOARDWIDTH,GameConstants.GAMEBOARDHEIGHT);
 	}
