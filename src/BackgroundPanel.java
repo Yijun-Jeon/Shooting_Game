@@ -14,7 +14,9 @@ public class BackgroundPanel extends JPanel{
 	
 	Image backgroundImg,logoImg,heartImg,scoreImg,
 		  bulletImg,planeImg,enemyImg,bulletEImg,
-		  effectImg,itemHeartImg,itemBulletImg;
+		  effectImg,itemHeartImg,itemBulletImg,
+		  gameoverImg;
+	
 	ImageIcon startImg;
 	LabelThread lblStart;
 	JLabel lblScore;
@@ -52,8 +54,8 @@ public class BackgroundPanel extends JPanel{
 		startImg = new ImageIcon("./img/start.png");
 		bulletImg = new ImageIcon("./img/bullet.png").getImage();
 		planeImg = new ImageIcon("./img/plane.png").getImage();
-	
 		logoImg = new ImageIcon("./img/logo.png").getImage();
+		gameoverImg = new ImageIcon("./img/gameover.png").getImage();
 		
 		lblStart = new LabelThread(startImg);
 		lblStart.setBounds(120,500,500,200);
@@ -95,10 +97,6 @@ public class BackgroundPanel extends JPanel{
 		itemHeartImg = new ImageIcon("./img/itemHeart.png").getImage();
 		
 		items = new Vector<Item>();
-		items.add(new Item(new Point(400,400),2));
-		items.add(new Item(new Point(200,200),2));
-		items.add(new Item(new Point(300,300),2));
-		items.add(new Item(new Point(200,200),2));
 	}
 
 	public void paint(Graphics page) {
@@ -133,6 +131,14 @@ public class BackgroundPanel extends JPanel{
 			drawEffect(dbPage);
 			drawItem(dbPage);
 			checkGameOver();
+			break;
+		case 2:
+			drawStage(dbPage);
+			drawEnemy(dbPage);
+			drawBulletE(dbPage);
+			drawEffect(dbPage);
+			drawItem(dbPage);
+			dbPage.drawImage(gameoverImg, 150, 200, null);
 			break;
 		}
 	}
@@ -219,13 +225,17 @@ public class BackgroundPanel extends JPanel{
 	}
 	private void checkGameOver() {
 		if(plane.getLife() < 0) {
-			status = 0;
-			lblScore.setVisible(false);
-			lblStart = new LabelThread(startImg);
-			lblStart.setBounds(120,500,500,200);
-			add(lblStart);
-			lblStart.start();
+			effects.add(new Effect(plane.getPt(),1));
+			status = 2;
 		}
+	}
+	public void moveToStart() {
+		status = 0;
+		lblScore.setVisible(false);
+		lblStart = new LabelThread(startImg);
+		lblStart.setBounds(120,500,500,200);
+		add(lblStart);
+		lblStart.start();
 	}
 	public void initGame() {
 		score = 0;
@@ -239,6 +249,7 @@ public class BackgroundPanel extends JPanel{
 		enemyNum = 1;
 		
 		effects.clear();
+		items.clear();
 		
 		bShoot = false;
 		lblScore.setVisible(true);

@@ -5,12 +5,12 @@ import java.util.Vector;
 
 public class Enemy {
 	
+	final int damageDistance = GameConstants.ENEMYIMGHEIGHT/2;
 	Point pt;
 	int enemyNum;
 	Vector<Bullet> bullets;
 	long shootTime;
 	int life;
-	int damageDistance;
 	boolean isDead;
 	
 	public Enemy(int num) {
@@ -20,7 +20,6 @@ public class Enemy {
 		bullets.add(new Bullet(this));
 		shootTime = System.currentTimeMillis();
 		life = 3;
-		damageDistance = GameConstants.ENEMYIMGHEIGHT/2;
 		isDead = false;
 	}
 	

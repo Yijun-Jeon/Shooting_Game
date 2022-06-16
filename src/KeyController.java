@@ -127,6 +127,11 @@ public class KeyController implements KeyListener{
 				keyBuff = 0;
 			}
 			break;
+		case 2:
+			if(keyBuff == KeyEvent.VK_ENTER)
+				panel.moveToStart();
+			keyBuff = 0;
+			break;
 		}
 	}
 

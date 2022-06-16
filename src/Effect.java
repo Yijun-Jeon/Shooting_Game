@@ -8,7 +8,7 @@ public class Effect {
 	
 	public Effect(Point point,int type){
 		pt=new Point(point);
-		cnt = 31;
+		cnt = 63;
 		this.type = type;
 		bDecre = false;
 	}
@@ -21,7 +21,7 @@ public class Effect {
 	public int getX() {return pt.x;}
 	public int getY() {return pt.y;}
 	public Point getPt() {return pt;}
-	public int getCnt() {return (cnt/8) % 4;}
+	public int getCnt() {return (cnt/16) % 4;}
 	public int getType() {return type;}
 	
 	public boolean decreCnt() {

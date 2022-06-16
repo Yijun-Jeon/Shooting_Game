@@ -3,16 +3,15 @@ import java.util.Vector;
 
 public class Plane{
 	
+	private final int damageDistance = GameConstants.PLANEIMGHEIGHT/2;
 	private Point pt;
 	Vector<Bullet> bullets;
-	private int damageDistance;
 	private int bulletNum;
 	private int life;
 	
 	public Plane() {
 		pt = new Point(GameConstants.GAMEBOARDWIDTH/2,GameConstants.GAMEBOARDHEIGHT - GameConstants.PLANEIMGHEIGHT/2);
-		bullets = new Vector<Bullet>();
-		damageDistance = GameConstants.PLANEIMGHEIGHT/2;
+		bullets = new Vector<Bullet>(); 
 		bulletNum = 1;
 		life = 3;
 	}
