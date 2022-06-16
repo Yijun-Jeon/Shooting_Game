@@ -2,8 +2,14 @@ import java.awt.Point;
 
 public class Effect {
 	private Point pt;
-	Effect(int x, int y){
-		pt=new Point(x,y);
+	private int cnt;
+	private int type; // Dead || Damaged
+	private boolean bDecre;
+	Effect(Point point,int type){
+		pt=new Point(point);
+		cnt = 31;
+		this.type = type;
+		bDecre = false;
 	}
 	
 	public void setX(int x) {pt.x = x;}
@@ -14,4 +20,12 @@ public class Effect {
 	public int getX() {return pt.x;}
 	public int getY() {return pt.y;}
 	public Point getPt() {return pt;}
+	public int getCnt() {return (cnt/8) % 4;}
+	public int getType() {return type;}
+	
+	public boolean decreCnt() {
+		if(bDecre) --cnt;
+		else bDecre = true;
+		return cnt == -1;
+	}
 }
