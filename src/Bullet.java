@@ -10,6 +10,9 @@ public class Bullet {
 	public Bullet(Enemy enemy) {
 		pt = new Point(enemy.getX(), enemy.getY()+GameConstants.ENEMYIMGHEIGHT/2);
 	}
+	public Bullet(Point point) {
+		pt = new Point(point.x , point.y-GameConstants.PLANEIMGHEIGHT/2);
+	}
 	
 	public void setX(int x) {pt.x = x;}
 	public void setY(int y) {pt.y = y;}

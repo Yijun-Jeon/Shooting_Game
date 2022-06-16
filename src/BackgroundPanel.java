@@ -175,9 +175,10 @@ public class BackgroundPanel extends JPanel{
 						if(enemy.isEnemyDead()) {
 							score += 100;
 							effects.add(new Effect(enemy.getPt(),1));
+							plane.removeBullet(j);
 							break;
 						}
-						else effects.add(new Effect(bullet.getPt(),2));
+						effects.add(new Effect(bullet.getPt(),2));
 						plane.removeBullet(j);
 					}
 				}
@@ -236,6 +237,7 @@ public class BackgroundPanel extends JPanel{
 		bDamaged = true;
 		damagedCnt = 120;
 		life--;
+		plane.increBulletNum(bDamaged);
 	}
 	public void drawEffect(Graphics page) {
 		for(int i=0;i<effects.size();i++) {

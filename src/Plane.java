@@ -6,11 +6,13 @@ public class Plane{
 	private Point pt;
 	Vector<Bullet> bullets;
 	private int damageDistance;
+	private int bulletNum;
 	
 	public Plane() {
 		pt = new Point(GameConstants.GAMEBOARDWIDTH/2,GameConstants.GAMEBOARDHEIGHT - GameConstants.PLANEIMGHEIGHT/2);
 		bullets = new Vector<Bullet>();
 		damageDistance = GameConstants.PLANEIMGHEIGHT/2;
+		bulletNum = 1;
 	}
 	
 	public void setX(int x) {pt.x = x;}
@@ -49,8 +51,28 @@ public class Plane{
 	}
 	
 	public void shoot(boolean bShoot) {
-		if(bShoot)
-			bullets.add(new Bullet(this));
+		if(bShoot) {
+			switch(bulletNum) {
+			case 1:
+				bullets.add(new Bullet(this));
+				break;
+			case 2:
+				bullets.add(new Bullet(new Point(pt.x - GameConstants.PLANEBULLETIMGWIDTH,pt.y)));
+				bullets.add(new Bullet(new Point(pt.x + GameConstants.PLANEBULLETIMGWIDTH,pt.y)));
+				break;
+			case 3:
+				bullets.add(new Bullet(new Point(pt.x - GameConstants.PLANEBULLETIMGWIDTH,pt.y)));
+				bullets.add(new Bullet(this));
+				bullets.add(new Bullet(new Point(pt.x + GameConstants.PLANEBULLETIMGWIDTH,pt.y)));
+				break;
+			case 4:
+				bullets.add(new Bullet(new Point(pt.x - GameConstants.PLANEBULLETIMGWIDTH*3/2,pt.y)));
+				bullets.add(new Bullet(new Point(pt.x - GameConstants.PLANEBULLETIMGWIDTH/2,pt.y)));
+				bullets.add(new Bullet(new Point(pt.x + GameConstants.PLANEBULLETIMGWIDTH/2,pt.y)));
+				bullets.add(new Bullet(new Point(pt.x + GameConstants.PLANEBULLETIMGWIDTH*3/2,pt.y)));
+				break;
+			}
+		}
 	}
 	public void removeBullet(int index) {
 		try {
@@ -66,5 +88,12 @@ public class Plane{
 		if(getDistance(pt,enemy.getPt()) < damageDistance)
 			return true;
 		return false;
+	}
+	public void increBulletNum(boolean damaged) {
+		if(!damaged) {
+			if(bulletNum < 4)
+				bulletNum++;
+		}
+		else bulletNum = 1; 
 	}
 }
