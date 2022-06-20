@@ -1,21 +1,17 @@
 import java.awt.Point;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Vector;
 
 public class Enemy {
 	
 	final int damageDistance = GameConstants.ENEMYIMGHEIGHT/2;
 	Point pt;
-	int enemyNum;
 	Vector<Bullet> bullets;
 	long shootTime;
 	int life;
 	boolean isDead;
 	
-	public Enemy(int num) {
+	public Enemy() {
 		pt = new Point((int)(Math.random()*(GameConstants.GAMEBOARDWIDTH - GameConstants.ENEMYIMGWIDTH)) + GameConstants.ENEMYIMGWIDTH/2,GameConstants.ENEMYIMGHEIGHT/2);
-		enemyNum = num;
 		bullets = new Vector<Bullet>();
 		bullets.add(new Bullet(this));
 		shootTime = System.currentTimeMillis();

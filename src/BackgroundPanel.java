@@ -85,7 +85,7 @@ public class BackgroundPanel extends JPanel{
 		
 		enemies = new Vector<Enemy>();
 		enemyTime = System.currentTimeMillis();
-		enemyNum = 1;
+		enemyNum = 0;
 		
 		damagedCnt = 0;
 		bDamaged = false;
@@ -173,8 +173,10 @@ public class BackgroundPanel extends JPanel{
 	private void makeEnemy() {
 		long time = System.currentTimeMillis();
 		if((time - enemyTime)/1000 >= GameConstants.ENEMYMAKINGTERM) {
-			enemies.add(new Enemy(enemyNum));
+			enemies.add(new Enemy());
 			enemyTime = time;
+			enemyNum++;
+			checkProcess();
 		}
 	}
 	private void drawEnemy(Graphics page) {
@@ -289,5 +291,11 @@ public class BackgroundPanel extends JPanel{
 				items.remove(i);
 		}
 		page.setClip(0,0,GameConstants.GAMEBOARDWIDTH,GameConstants.GAMEBOARDHEIGHT);
+	}
+	public void checkProcess() {
+		if(enemyNum % 10 == 0) 
+			GameConstants.ENEMYSHOOTTERM = GameConstants.ENEMYSHOOTTERM == 1 ? 1 : GameConstants.ENEMYSHOOTTERM-1; 
+		else if(enemyNum % 5 == 0) 
+			GameConstants.ENEMYMAKINGTERM = GameConstants.ENEMYMAKINGTERM == 1 ? 1 : GameConstants.ENEMYMAKINGTERM-1;
 	}
 }

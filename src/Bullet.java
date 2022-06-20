@@ -32,8 +32,8 @@ public class Bullet {
 	public boolean move() {
 		checkPt();
 		if(degree != -1) {
-			pt.x -= GameConstants.PLANESPEED*Math.sin(Math.toRadians(degree));
-		 	pt.y -= GameConstants.PLANESPEED*Math.cos(Math.toRadians(degree));
+			pt.x -= GameConstants.ENEMYBULLETSPEED*Math.sin(Math.toRadians(degree));
+		 	pt.y -= GameConstants.ENEMYBULLETSPEED*Math.cos(Math.toRadians(degree));
 		}
 		return getY() > GameConstants.GAMEBOARDHEIGHT;
 	}
