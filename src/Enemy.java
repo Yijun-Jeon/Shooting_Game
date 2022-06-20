@@ -3,19 +3,38 @@ import java.util.Vector;
 
 public class Enemy {
 	
-	final int damageDistance = GameConstants.ENEMYIMGHEIGHT/2;
+	int imgHeight;
+	int imgWidth; 
+	int damageDistance;
 	Point pt;
 	Vector<Bullet> bullets;
 	long shootTime;
 	int life;
 	boolean isDead;
+	int type;
 	
-	public Enemy() {
-		pt = new Point((int)(Math.random()*(GameConstants.GAMEBOARDWIDTH - GameConstants.ENEMYIMGWIDTH)) + GameConstants.ENEMYIMGWIDTH/2,GameConstants.ENEMYIMGHEIGHT/2);
+	public Enemy(int num) {
+		switch(num) {
+		case 1:
+			imgHeight = GameConstants.ENEMY1IMGHEIGHT;
+			imgWidth = GameConstants.ENEMY1IMGWIDTH;
+			break;
+		case 2:
+			imgHeight = GameConstants.ENEMY2IMGHEIGHT;
+			imgWidth = GameConstants.ENEMY2IMGWIDTH;
+			break;
+		case 3:
+			imgHeight = GameConstants.ENEMY3IMGHEIGHT;
+			imgWidth = GameConstants.ENEMY3IMGWIDTH;
+			break;
+		}
+		type = num;
+		damageDistance = imgHeight/2;
+		pt = new Point((int)(Math.random()*(GameConstants.GAMEBOARDWIDTH - imgWidth)) + imgWidth/2,imgHeight/2);
 		bullets = new Vector<Bullet>();
-		bullets.add(new Bullet(this));
+		addBullet();
 		shootTime = System.currentTimeMillis();
-		life = 3;
+		life = 3 * num;
 		isDead = false;
 	}
 	
@@ -29,7 +48,7 @@ public class Enemy {
 	public Point getPt() {return pt;}
 	
 	public void initEnemy() {
-		setY(GameConstants.ENEMYIMGHEIGHT/2);
+		setY(imgHeight/2);
 		bullets.clear();
 	}
 	
@@ -44,8 +63,24 @@ public class Enemy {
 	public void shoot() {
 		long time = System.currentTimeMillis();
 		if(!isDead && (time-shootTime)/1000 >= GameConstants.ENEMYSHOOTTERM) {
-			bullets.add(new Bullet(this));
+			addBullet();
 			shootTime = time;
+		}
+	}
+	private void addBullet() {
+		switch(type) {
+		case 1:
+			bullets.add(new Bullet(this));
+			break;
+		case 2:
+			bullets.add(new Bullet(this));
+			bullets.add(new Bullet(this));
+			break;
+		case 3:
+			bullets.add(new Bullet(this,new Point(pt.x - GameConstants.ENEMYBULLETIMGWIDTH,pt.y)));
+			bullets.add(new Bullet(this,pt));
+			bullets.add(new Bullet(this,new Point(pt.x + GameConstants.ENEMYBULLETIMGWIDTH,pt.y)));
+			break;
 		}
 	}
 	public boolean isEnemyDead() {

@@ -13,9 +13,10 @@ import javax.swing.SwingConstants;
 public class BackgroundPanel extends JPanel{
 	
 	Image backgroundImg,logoImg,heartImg,scoreImg,
-		  bulletImg,planeImg,enemyImg,bulletEImg,
+		  bulletImg,planeImg,bulletEImg,
 		  effectImg,itemHeartImg,itemBulletImg,
 		  gameoverImg;
+	Image[] enemyImgs;
 	
 	ImageIcon startImg;
 	LabelThread lblStart;
@@ -80,7 +81,6 @@ public class BackgroundPanel extends JPanel{
 		
 		bShoot = false;
 		
-		enemyImg = new ImageIcon("./img/enemy1.png").getImage();
 		bulletEImg = new ImageIcon("./img/bulletE.png").getImage();
 		
 		enemies = new Vector<Enemy>();
@@ -97,6 +97,11 @@ public class BackgroundPanel extends JPanel{
 		itemHeartImg = new ImageIcon("./img/itemHeart.png").getImage();
 		
 		items = new Vector<Item>();
+		
+		enemyImgs = new Image[3];
+		enemyImgs[0] = new ImageIcon("./img/enemy1.png").getImage();
+		enemyImgs[1] = new ImageIcon("./img/enemy2.png").getImage();
+		enemyImgs[2] = new ImageIcon("./img/enemy3.png").getImage();
 	}
 
 	public void paint(Graphics page) {
@@ -173,7 +178,12 @@ public class BackgroundPanel extends JPanel{
 	private void makeEnemy() {
 		long time = System.currentTimeMillis();
 		if((time - enemyTime)/1000 >= GameConstants.ENEMYMAKINGTERM) {
-			enemies.add(new Enemy());
+			if(enemyNum % 5 == 0)
+				enemies.add(new Enemy(3));
+			else if((enemyNum-3) % 5 == 0)
+				enemies.add(new Enemy(2));
+			else
+				enemies.add(new Enemy(1));
 			enemyTime = time;
 			enemyNum++;
 			checkProcess();
@@ -187,7 +197,7 @@ public class BackgroundPanel extends JPanel{
 			if(enemy.moveDown())
 				enemies.remove(i);
 			else {
-				page.drawImage(enemyImg, enemy.getX() - GameConstants.ENEMYIMGWIDTH/2, enemy.getY() - GameConstants.ENEMYIMGHEIGHT/2, null);
+				page.drawImage(enemyImgs[enemy.type-1], enemy.getX() - enemy.imgWidth/2, enemy.getY() - enemy.imgHeight/2, null);
 				for(int j=0;j<plane.bullets.size();j++) {
 					Bullet bullet = plane.bullets.elementAt(j);
 					if(enemy.getDamaged(bullet)) {

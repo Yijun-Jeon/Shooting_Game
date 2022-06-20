@@ -9,8 +9,12 @@ public class Bullet {
 		pt = new Point(plane.getX(), plane.getY()-GameConstants.PLANEIMGHEIGHT/2);
 	}
 	public Bullet(Enemy enemy) {
-		pt = new Point(enemy.getX(), enemy.getY()+GameConstants.ENEMYIMGHEIGHT/2);
+		pt = new Point(enemy.getX(), enemy.getY()+enemy.imgHeight/2);
 		degree = (int)(Math.random()*140) + 110;
+	}
+	public Bullet(Enemy enemy,Point point) {
+		pt = new Point(point.x, point.y+enemy.imgHeight/2);
+		degree = 180;
 	}
 	public Bullet(Point point) {
 		pt = new Point(point.x , point.y-GameConstants.PLANEIMGHEIGHT/2);
