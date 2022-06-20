@@ -3,12 +3,14 @@ import java.awt.Point;
 public class Bullet {
 	
 	private Point pt;
+	private int degree;
 	
 	public Bullet(Plane plane) {
 		pt = new Point(plane.getX(), plane.getY()-GameConstants.PLANEIMGHEIGHT/2);
 	}
 	public Bullet(Enemy enemy) {
 		pt = new Point(enemy.getX(), enemy.getY()+GameConstants.ENEMYIMGHEIGHT/2);
+		degree = (int)(Math.random()*140) + 110;
 	}
 	public Bullet(Point point) {
 		pt = new Point(point.x , point.y-GameConstants.PLANEIMGHEIGHT/2);
@@ -27,8 +29,22 @@ public class Bullet {
 		setY(getY()-GameConstants.PLANEBULLETSPEED);
 		return getY() < 0;
 	}
-	public boolean moveDown() {
-		setY(getY()+GameConstants.ENEMYBULLETSPEED);
+	public boolean move() {
+		checkPt();
+		if(degree != -1) {
+			pt.x -= GameConstants.PLANESPEED*Math.sin(Math.toRadians(degree));
+		 	pt.y -= GameConstants.PLANESPEED*Math.cos(Math.toRadians(degree));
+		}
 		return getY() > GameConstants.GAMEBOARDHEIGHT;
+	}
+	public void checkPt() {
+		if(getX() <= 0) {
+			setX(0);
+			degree = 360 - degree;
+		}
+		else if(getX() >= GameConstants.GAMEBOARDWIDTH) {
+			setX(GameConstants.GAMEBOARDWIDTH);
+			degree = 360 - degree; 
+		}
 	}
 }

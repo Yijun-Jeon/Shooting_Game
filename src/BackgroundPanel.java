@@ -218,7 +218,7 @@ public class BackgroundPanel extends JPanel{
 					enemy.removeBullet(i);
 					planeDamaged();
 				}
-				else if((bulletE.moveDown()))
+				else if((bulletE.move()))
 					enemy.removeBullet(i);
 			}
 		}
