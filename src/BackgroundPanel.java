@@ -29,6 +29,7 @@ public class BackgroundPanel extends JPanel{
 	int degree;
 	int damagedCnt;
 	int gauge;
+	int gaugeCnt;
 	
 	Image dbImg;
 	Graphics dbPage;
@@ -110,6 +111,7 @@ public class BackgroundPanel extends JPanel{
 		
 		specialGaugeImg = new ImageIcon("./img/specialgauge.png").getImage();
 		gauge = 95;
+		gaugeCnt = 0;
 	}
 
 	public void paint(Graphics page) {
@@ -164,7 +166,10 @@ public class BackgroundPanel extends JPanel{
 			page.drawImage(heartImg,10 + 70*i,10,null);
 		page.drawImage(scoreImg,630,0,null);
 		lblScore.setText(score+"");
-		page.drawImage(specialGaugeImg, 450, 5, null);
+		if(gauge == 100) {
+			if(gaugeCnt++ % 200 < 100)
+				page.drawImage(specialGaugeImg, 450, 5, null);
+		}else page.drawImage(specialGaugeImg, 450, 5, null);
 		page.setColor(Color.cyan);
 		page.drawRect(510, 30, 100, 20);
 		page.fillRect(510, 30, gauge, 20);
@@ -184,6 +189,7 @@ public class BackgroundPanel extends JPanel{
 			if(gauge == 100) {
 				plane.specialShoot();
 				gauge = 0;
+				gaugeCnt = 0;
 				planeInvicible();
 			}
 			bSpecial = false;
