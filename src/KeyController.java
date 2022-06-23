@@ -96,37 +96,55 @@ public class KeyController implements KeyListener{
 			switch(keyBuff) {
 			case LEFT:
 			case LEFT | SHOOT:
+			case LEFT | SPECIALSHOOT:
+			case LEFT | SHOOT | SPECIALSHOOT:	
 				panel.degree = LEFTDEGREE;
 				break;
 			case RIGHT:
 			case RIGHT | SHOOT:
+			case RIGHT | SPECIALSHOOT:
+			case RIGHT | SHOOT | SPECIALSHOOT:
 				panel.degree = RIGHTDEGREE;
 				break;
 			case UP:
 			case UP | SHOOT:
+			case UP | SPECIALSHOOT:
+			case UP | SHOOT | SPECIALSHOOT:
 				panel.degree = UPDEGREE;
 				break;
 			case DOWN:
 			case DOWN | SHOOT:
+			case DOWN | SPECIALSHOOT:
+			case DOWN | SHOOT | SPECIALSHOOT:
 				panel.degree = DOWNDEGREE;
 				break;
 			case LEFT | UP:
 			case LEFT | UP | SHOOT:
+			case LEFT | UP | SPECIALSHOOT:
+			case LEFT | UP | SHOOT | SPECIALSHOOT:
 				panel.degree = LEFTUPDEGREE;
 				break;
 			case RIGHT | UP:
 			case RIGHT | UP | SHOOT:
+			case RIGHT | UP | SPECIALSHOOT:
+			case RIGHT | UP | SHOOT | SPECIALSHOOT:
 				panel.degree = RIGHTUPDEGREE;
 				break;
 			case LEFT | DOWN:
 			case LEFT | DOWN | SHOOT:
+			case LEFT | DOWN | SPECIALSHOOT:
+			case LEFT | DOWN | SHOOT | SPECIALSHOOT:
 				panel.degree = LEFTDOWNDEGREE;
 				break;
 			case RIGHT | DOWN:
 			case RIGHT | DOWN | SHOOT:
+			case RIGHT | DOWN | SPECIALSHOOT:
+			case RIGHT | DOWN | SHOOT | SPECIALSHOOT:
 				panel.degree = RIGHTDOWNDEGREE;
 				break;
 			case SHOOT:
+			case SPECIALSHOOT:
+			case SHOOT | SPECIALSHOOT:
 				panel.degree = -1;
 				break;
 			default:

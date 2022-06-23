@@ -15,7 +15,7 @@ public class BackgroundPanel extends JPanel{
 	Image backgroundImg,logoImg,heartImg,scoreImg,
 		  bulletImg,planeImg,bulletEImg,
 		  effectImg,itemHeartImg,itemBulletImg,
-		  gameoverImg,specialBulletImg;
+		  gameoverImg,specialBulletImg,specialGaugeImg;
 	Image[] enemyImgs;
 	
 	ImageIcon startImg;
@@ -28,6 +28,7 @@ public class BackgroundPanel extends JPanel{
 	int score;
 	int degree;
 	int damagedCnt;
+	int gauge;
 	
 	Image dbImg;
 	Graphics dbPage;
@@ -106,6 +107,9 @@ public class BackgroundPanel extends JPanel{
 		
 		specialBulletImg = new ImageIcon("./img/specialbullet.png").getImage();
 		bSpecial = false;
+		
+		specialGaugeImg = new ImageIcon("./img/specialgauge.png").getImage();
+		gauge = 95;
 	}
 
 	public void paint(Graphics page) {
@@ -160,6 +164,10 @@ public class BackgroundPanel extends JPanel{
 			page.drawImage(heartImg,10 + 70*i,10,null);
 		page.drawImage(scoreImg,630,0,null);
 		lblScore.setText(score+"");
+		page.drawImage(specialGaugeImg, 450, 5, null);
+		page.setColor(Color.cyan);
+		page.drawRect(510, 30, 100, 20);
+		page.fillRect(510, 30, gauge, 20);
 	}
 	private void drawPlane(Graphics page) {
 		plane.move(degree);
@@ -173,8 +181,11 @@ public class BackgroundPanel extends JPanel{
 ;	}
 	private void drawBullet(Graphics page) {
 		if(bSpecial) {
-			plane.specialShoot();
-			planeInvicible();
+			if(gauge == 100) {
+				plane.specialShoot();
+				gauge = 0;
+				planeInvicible();
+			}
 			bSpecial = false;
 		}
 		for(int i=0; i<plane.bullets.size();i++) {
@@ -233,6 +244,7 @@ public class BackgroundPanel extends JPanel{
 							}
 							effects.add(new Effect(bullet.getPt(),2));
 							plane.removeBullet(j);
+							gauge = gauge == 100 ? 100 : gauge + 5;
 						}
 					}
 				}
