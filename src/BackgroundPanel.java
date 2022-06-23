@@ -15,7 +15,7 @@ public class BackgroundPanel extends JPanel{
 	Image backgroundImg,logoImg,heartImg,scoreImg,
 		  bulletImg,planeImg,bulletEImg,
 		  effectImg,itemHeartImg,itemBulletImg,
-		  gameoverImg;
+		  gameoverImg,specialBulletImg;
 	Image[] enemyImgs;
 	
 	ImageIcon startImg;
@@ -34,6 +34,7 @@ public class BackgroundPanel extends JPanel{
 	
 	boolean bShoot;
 	boolean bDamaged;
+	boolean bSpecial;
 	
 	Vector<Enemy> enemies;
 	long enemyTime;
@@ -102,6 +103,9 @@ public class BackgroundPanel extends JPanel{
 		enemyImgs[0] = new ImageIcon("./img/enemy1.png").getImage();
 		enemyImgs[1] = new ImageIcon("./img/enemy2.png").getImage();
 		enemyImgs[2] = new ImageIcon("./img/enemy3.png").getImage();
+		
+		specialBulletImg = new ImageIcon("./img/specialbullet.png").getImage();
+		bSpecial = false;
 	}
 
 	public void paint(Graphics page) {
@@ -168,9 +172,17 @@ public class BackgroundPanel extends JPanel{
 		else page.drawImage(planeImg,plane.getX()-GameConstants.PLANEIMGWIDTH/2, plane.getY()-GameConstants.PLANEIMGHEIGHT/2,null);
 ;	}
 	private void drawBullet(Graphics page) {
+		if(bSpecial) {
+			plane.specialShoot();
+			planeInvicible();
+			bSpecial = false;
+		}
 		for(int i=0; i<plane.bullets.size();i++) {
 			Bullet bullet = plane.bullets.elementAt(i);
-			page.drawImage(bulletImg,bullet.getX()-GameConstants.PLANEBULLETIMGWIDTH/2,bullet.getY()-GameConstants.PLANEBULLETIMGHEIGHT/2,null);
+			if(bullet.bSpecial)
+				page.drawImage(specialBulletImg,bullet.getX()-GameConstants.SPECIALBULLETIMGWIDTH/2,bullet.getY()-GameConstants.SPECIALBULLETIMGHEIGHT/2,null);
+			else
+				page.drawImage(bulletImg,bullet.getX()-GameConstants.PLANEBULLETIMGWIDTH/2,bullet.getY()-GameConstants.PLANEBULLETIMGHEIGHT/2,null);
 			if(bullet.moveAhead())
 				plane.removeBullet(i);
 		}
@@ -200,23 +212,35 @@ public class BackgroundPanel extends JPanel{
 				page.drawImage(enemyImgs[enemy.type-1], enemy.getX() - enemy.imgWidth/2, enemy.getY() - enemy.imgHeight/2, null);
 				for(int j=0;j<plane.bullets.size();j++) {
 					Bullet bullet = plane.bullets.elementAt(j);
-					if(enemy.getDamaged(bullet)) {
-						if(enemy.isEnemyDead()) {
-							score += 100;
-							effects.add(new Effect(enemy.getPt(),1));
-							plane.removeBullet(j);
-							enemy.makeItem(items);
-							break;
+					if(bullet.bSpecial) {
+						if(enemy.getSpecialDamaged(bullet)) {
+							if(enemy.isEnemyDead()) {
+								score += 100;
+								effects.add(new Effect(enemy.getPt(),1));
+								enemy.makeItem(items);
+								break;
+							}
 						}
-						effects.add(new Effect(bullet.getPt(),2));
-						plane.removeBullet(j);
+					}
+					else {
+						if(enemy.getDamaged(bullet)) {
+							if(enemy.isEnemyDead()) {
+								score += 100;
+								effects.add(new Effect(enemy.getPt(),1));
+								plane.removeBullet(j);
+								enemy.makeItem(items);
+								break;
+							}
+							effects.add(new Effect(bullet.getPt(),2));
+							plane.removeBullet(j);
+						}
 					}
 				}
 				if(plane.getDamaged(enemy) && !bDamaged) {
 					effects.add(new Effect(plane.getPt(),2));
 					planeDamaged();
 				}
-			}
+			}	
 		}
 	}
 	private void drawBulletE(Graphics page) {
@@ -268,10 +292,13 @@ public class BackgroundPanel extends JPanel{
 		lblStart.setVisible(false);
 	}
 	public void planeDamaged() {
-		bDamaged = true;
-		damagedCnt = 120;
+		planeInvicible();
 		plane.decreLife();
 		plane.increBulletNum(bDamaged);
+	}
+	public void planeInvicible() {
+		bDamaged = true;
+		damagedCnt = 120;
 	}
 	public void drawEffect(Graphics page) {
 		for(int i=0;i<effects.size();i++) {

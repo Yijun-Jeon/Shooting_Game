@@ -3,11 +3,12 @@ import java.awt.event.KeyListener;
 
 public class KeyController implements KeyListener{
 	
-	public final static int UP		= 0x001;
-	public final static int DOWN	= 0x002;
-	public final static int LEFT	= 0x004;
-	public final static int RIGHT	= 0x008;
-	public final static int SHOOT	= 0x010;
+	public final static int UP			 = 0x001;
+	public final static int DOWN		 = 0x002;
+	public final static int LEFT		 = 0x004;
+	public final static int RIGHT		 = 0x008;
+	public final static int SHOOT		 = 0x010;
+	public final static int SPECIALSHOOT = 0x020;
 	
 	public final static int LEFTDEGREE 		= 90;
 	public final static int RIGHTDEGREE 	= 270;
@@ -48,6 +49,8 @@ public class KeyController implements KeyListener{
 				break;
 			case KeyEvent.VK_SPACE:
 				keyBuff |= SHOOT;
+			case KeyEvent.VK_S:
+				keyBuff |= SPECIALSHOOT;
 			}
 		}else keyBuff = keyCode;
 	}
@@ -72,6 +75,10 @@ public class KeyController implements KeyListener{
 		case KeyEvent.VK_SPACE:
 			keyBuff &= ~SHOOT;
 			panel.bShoot = true;
+			break;
+		case KeyEvent.VK_S:
+			keyBuff &= ~SPECIALSHOOT;
+			panel.bSpecial = true;
 			break;
 		}
 	}

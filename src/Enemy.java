@@ -95,7 +95,15 @@ public class Enemy {
 	}
 	public boolean getDamaged(Bullet bullet) {
 		if(getDistance(pt,bullet.getPt()) < damageDistance) {
-			life--;
+			life -= bullet.getDamage();
+			return true;
+		}
+		return false;
+	}
+	public boolean getSpecialDamaged(Bullet bullet) {
+		if(getY() > bullet.getY() - GameConstants.SPECIALBULLETIMGHEIGHT/2
+				&& getY() < bullet.getY() + GameConstants.SPECIALBULLETIMGHEIGHT/2) {
+			life -= bullet.getDamage();
 			return true;
 		}
 		return false;

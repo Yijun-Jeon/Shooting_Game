@@ -78,6 +78,11 @@ public class Plane{
 			}
 		}
 	}
+	public void specialShoot() {
+		int index = GameConstants.GAMEBOARDWIDTH/GameConstants.SPECIALBULLETIMGWIDTH;
+		for(int i=0;i<index+1;i++)
+			bullets.add(new Bullet(i));
+	}
 	public void removeBullet(int index) {
 		try {
 			bullets.remove(index);
