@@ -13,7 +13,7 @@ import javax.swing.SwingConstants;
 public class BackgroundPanel extends JPanel{
 	
 	Image backgroundImg,logoImg,heartImg,scoreImg,
-		  bulletImg,planeImg,bulletEImg,
+		  gameboardImg,bulletImg,planeImg,bulletEImg,
 		  effectImg,itemHeartImg,itemBulletImg,
 		  gameoverImg,specialBulletImg,specialGaugeImg;
 	Image[] enemyImgs;
@@ -57,6 +57,7 @@ public class BackgroundPanel extends JPanel{
 		status = 0;
 		
 		backgroundImg = new ImageIcon("./img/background.png").getImage();
+		gameboardImg = new ImageIcon("./img/gameboard.jpg").getImage();
 		startImg = new ImageIcon("./img/start.png");
 		bulletImg = new ImageIcon("./img/bullet.png").getImage();
 		planeImg = new ImageIcon("./img/plane.png").getImage();
@@ -134,13 +135,13 @@ public class BackgroundPanel extends JPanel{
 		page.drawImage(dbImg,0,0,null);
 	}
 	public void dbPaint() {
-		//dbPage.drawImage(backgroundImg,0,0,null);
-		drawBackground(dbPage);
 		switch(status) {
 		case 0:
+			dbPage.drawImage(backgroundImg,0,0,null);
 			dbPage.drawImage(logoImg,30,130,null);
 			break;
 		case 1:
+			drawGameboard(dbPage);
 			drawStage(dbPage);
 			drawPlane(dbPage);
 			makeEnemy();
@@ -154,6 +155,7 @@ public class BackgroundPanel extends JPanel{
 			checkGameOver();
 			break;
 		case 2:
+			drawGameboard(dbPage);
 			drawStage(dbPage);
 			drawEnemy(dbPage);
 			drawBulletE(dbPage);
@@ -167,11 +169,11 @@ public class BackgroundPanel extends JPanel{
 	public void addKeyController(KeyController key) {
 		this.addKeyListener(key);
 	}
-	private void drawBackground(Graphics page) {
+	private void drawGameboard(Graphics page) {
 		page.setClip(0,0,GameConstants.GAMEBOARDWIDTH,bckIndex);
-		page.drawImage(backgroundImg,0,-(GameConstants.GAMEBOARDHEIGHT - bckIndex),null);
+		page.drawImage(gameboardImg,0,-(GameConstants.GAMEBOARDHEIGHT - bckIndex),null);
 		page.setClip(0, bckIndex, GameConstants.GAMEBOARDWIDTH, GameConstants.GAMEBOARDHEIGHT - bckIndex);
-		page.drawImage(backgroundImg,0,bckIndex,null);
+		page.drawImage(gameboardImg,0,bckIndex,null);
 		page.setClip(0,0,GameConstants.GAMEBOARDWIDTH,GameConstants.GAMEBOARDHEIGHT);
 		if(bckCnt++ % 3 == 0)
 			bckIndex++;
