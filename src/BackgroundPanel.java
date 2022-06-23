@@ -30,6 +30,8 @@ public class BackgroundPanel extends JPanel{
 	int damagedCnt;
 	int gauge;
 	int gaugeCnt;
+	int bckCnt;
+	int bckIndex;
 	
 	Image dbImg;
 	Graphics dbPage;
@@ -110,8 +112,11 @@ public class BackgroundPanel extends JPanel{
 		bSpecial = false;
 		
 		specialGaugeImg = new ImageIcon("./img/specialgauge.png").getImage();
-		gauge = 95;
+		gauge = 0;
 		gaugeCnt = 0;
+		
+		bckCnt = 0;
+		bckIndex = 0;
 	}
 
 	public void paint(Graphics page) {
@@ -129,7 +134,8 @@ public class BackgroundPanel extends JPanel{
 		page.drawImage(dbImg,0,0,null);
 	}
 	public void dbPaint() {
-		dbPage.drawImage(backgroundImg,0,0,null);
+		//dbPage.drawImage(backgroundImg,0,0,null);
+		drawBackground(dbPage);
 		switch(status) {
 		case 0:
 			dbPage.drawImage(logoImg,30,130,null);
@@ -160,6 +166,18 @@ public class BackgroundPanel extends JPanel{
 	
 	public void addKeyController(KeyController key) {
 		this.addKeyListener(key);
+	}
+	private void drawBackground(Graphics page) {
+		page.setClip(0,0,GameConstants.GAMEBOARDWIDTH,bckIndex);
+		page.drawImage(backgroundImg,0,-(GameConstants.GAMEBOARDHEIGHT - bckIndex),null);
+		page.setClip(0, bckIndex, GameConstants.GAMEBOARDWIDTH, GameConstants.GAMEBOARDHEIGHT - bckIndex);
+		page.drawImage(backgroundImg,0,bckIndex,null);
+		page.setClip(0,0,GameConstants.GAMEBOARDWIDTH,GameConstants.GAMEBOARDHEIGHT);
+		if(bckCnt++ % 3 == 0)
+			bckIndex++;
+		if(bckIndex == GameConstants.GAMEBOARDHEIGHT)
+			bckIndex = 0;
+		
 	}
 	private void drawStage(Graphics page) {
 		for(int i=0;i<plane.getLife();i++)

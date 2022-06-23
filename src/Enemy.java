@@ -110,11 +110,11 @@ public class Enemy {
 	}
 	public void makeItem(Vector<Item> items) {
 		int random = (int)(Math.random()*100);
-		if(random > 90) {
+		if(random > 80) {
 			Item item = new Item(this.getPt(),2);
 			items.add(item);
 		}
-		else if(random > 70) {
+		else if(random > 60) {
 			Item item = new Item(this.getPt(),1);
 			items.add(item);
 		}
