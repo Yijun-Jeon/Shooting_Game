@@ -52,6 +52,7 @@ public class BackgroundPanel extends JPanel{
 	
 	Boss boss;
 	int bossCnt;
+	int bossAttack;
 	
 	public BackgroundPanel() {
 		this.setPreferredSize(new Dimension(GameConstants.GAMEBOARDWIDTH,GameConstants.GAMEBOARDHEIGHT));
@@ -343,8 +344,21 @@ public class BackgroundPanel extends JPanel{
 					plane.removeBullet(i);
 				}
 			}
-			if(bossCnt++ % 300 == 0)
+			if(bossAttack == 5 && boss.bAttack) {
+				if(boss.getY() < GameConstants.BOSSIMGHEIGHT/2*3) {
+					boss.attackDown();
+				}else boss.bAttack = false;
+			}
+			else if(bossAttack == 5) {
+				if(boss.getY() > 0)
+					boss.moveUp();
+				else bossAttack = 0;
+			}
+			else if(bossCnt++ % 100 == 0 && bossAttack < 5) {
 				boss.makeBullet();
+				if(++bossAttack == 5)
+					boss.bAttack = true;
+			}
 		}
 		dbPage.setColor(Color.red);
 		dbPage.fillRect(0, 0, 740/100*boss.life + 40, 5);
@@ -392,7 +406,7 @@ public class BackgroundPanel extends JPanel{
 				break;
 			}
 		}
-		else if(status == 1 && score >= 100) 
+		else if(status == 1 && score >= 0) 
 			status = 3;
 	}
 	public void moveToStart() {

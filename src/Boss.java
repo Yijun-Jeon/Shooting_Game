@@ -36,7 +36,7 @@ public class Boss {
 		setY(getY()+GameConstants.BOSSDOWNSPEED); 
 	}
 	public void moveUp() {
-		setY(getY()-GameConstants.BOSSDOWNSPEED); 
+		setY(getY()-GameConstants.BOSSATTACKSPEED); 
 	}
 	public void attackDown() {
 		setY(getY()+GameConstants.BOSSATTACKSPEED);
