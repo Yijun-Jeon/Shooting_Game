@@ -50,6 +50,8 @@ public class BackgroundPanel extends JPanel{
 	
 	Vector<Item> items;
 	
+	Boss boss;
+	int bossCnt;
 	
 	public BackgroundPanel() {
 		this.setPreferredSize(new Dimension(GameConstants.GAMEBOARDWIDTH,GameConstants.GAMEBOARDHEIGHT));
@@ -121,6 +123,8 @@ public class BackgroundPanel extends JPanel{
 		bckIndex = 0;
 		
 		bossImg = new ImageIcon("./img/boss.png").getImage();
+		boss = new Boss();
+		bossCnt = 0;
 	}
 
 	public void paint(Graphics page) {
@@ -155,8 +159,7 @@ public class BackgroundPanel extends JPanel{
 			drawBulletE(dbPage);
 			drawEffect(dbPage);
 			drawItem(dbPage);
-			checkGameOver();
-			dbPage.drawImage(bossImg,0,-200,null);
+			checkGameStatus();
 			break;
 		case 2:
 			drawGameboard(dbPage);
@@ -168,7 +171,7 @@ public class BackgroundPanel extends JPanel{
 			dbPage.drawImage(gameoverImg, 150, 200, null);
 		case 3:
 			drawGameboard(dbPage);
-			drawStage(dbPage);
+			drawBoss(dbPage);
 			drawPlane(dbPage);
 			drawEnemy(dbPage);
 			plane.shoot(bShoot);
@@ -177,7 +180,8 @@ public class BackgroundPanel extends JPanel{
 			drawBulletE(dbPage);
 			drawEffect(dbPage);
 			drawItem(dbPage);
-			checkGameOver();
+			checkGameStatus();
+			drawStage(dbPage);
 			break;
 		}
 	}
@@ -313,11 +317,13 @@ public class BackgroundPanel extends JPanel{
 			}
 		}
 	}
-	private void checkGameOver() {
+	private void checkGameStatus() {
 		if(plane.getLife() < 0) {
 			effects.add(new Effect(plane.getPt(),1));
 			status = 2;
 		}
+		if(status == 1 && score >= 100) 
+			status = 3;
 	}
 	public void moveToStart() {
 		status = 0;
@@ -388,5 +394,15 @@ public class BackgroundPanel extends JPanel{
 			GameConstants.ENEMYSHOOTTERM = GameConstants.ENEMYSHOOTTERM == 1 ? 1 : GameConstants.ENEMYSHOOTTERM-1; 
 		else if(enemyNum % 5 == 0) 
 			GameConstants.ENEMYMAKINGTERM = GameConstants.ENEMYMAKINGTERM == 1 ? 1 : GameConstants.ENEMYMAKINGTERM-1;
+	}
+	public void drawBoss(Graphics page) {
+		if(boss.first) {
+			if(bossCnt++ % 8 == 0)
+				page.drawImage(bossImg, 0, boss.getY() - GameConstants.BOSSIMGHEIGHT/2, null);
+			if(boss.getY() < 0)
+				boss.moveDown();
+			else boss.first = false;
+		}
+		else page.drawImage(bossImg, 0, boss.getY() - GameConstants.BOSSIMGHEIGHT/2, null);
 	}
 }

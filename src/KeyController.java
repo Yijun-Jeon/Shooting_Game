@@ -33,7 +33,7 @@ public class KeyController implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
-		if(panel.status == 1) {
+		if(panel.status == 1 || panel.status == 3) {
 			switch(keyCode) {
 			case KeyEvent.VK_LEFT:
 				keyBuff |= LEFT;
@@ -93,6 +93,7 @@ public class KeyController implements KeyListener{
 			}
 			break;
 		case 1:
+		case 3:
 			switch(keyBuff) {
 			case LEFT:
 			case LEFT | SHOOT:
