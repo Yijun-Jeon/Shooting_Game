@@ -12,7 +12,7 @@ public class Boss {
 	public Boss() {
 		pt = new Point(GameConstants.GAMEBOARDWIDTH/2, -GameConstants.BOSSIMGHEIGHT/2);
 		bullets = new Vector<Bullet>();
-		life = 100;
+		life = -5;
 		isDead = false;
 		bInvicible = true;
 		first = true;
@@ -36,5 +36,45 @@ public class Boss {
 	}
 	public void attackDown() {
 		setY(getY()+GameConstants.BOSSATTACKSPEED);
+	}
+	public boolean getDamaged(Bullet bullet) {
+		life -= bullet.getDamage();
+		int x = bullet.getX();
+		int y = bullet.getY();
+		if(0 <= x && x < 140 ||
+			180 < x && x < 210 ||
+			242 < x && x < 275 ||
+			308 < x && x < 340 ||
+			396 < x && x < 427 ||
+			462 < x && x < 494 ||
+			527 < x && x < 560 ||
+			593 < x && x <= 740) {
+			if(y < 295 - GameConstants.BOSSIMGHEIGHT/2)
+				return true;
+		}
+		else if(140 <= x && x <= 180 || 
+				560 <= x && x <= 593) {
+			if(y < 325 - GameConstants.BOSSIMGHEIGHT/2)
+				return true;
+		}
+		else if(210 <= x && x <= 242 ||
+				494 <= x && x <= 527 ) {
+			if(y < 330 - GameConstants.BOSSIMGHEIGHT/2)
+				return true;
+		}
+		else if(275 <= x && x <= 308 ||
+				427 <= x && x <= 462 ) {
+			if(y < 335 - GameConstants.BOSSIMGHEIGHT/2)
+				return true;
+		}
+		else if(340 <= x && x <= 396) {
+			if(y < 403 - GameConstants.BOSSIMGHEIGHT/2)
+				return true;
+		}
+		life += bullet.getDamage();
+		return false;
+	}
+	public boolean isBossDead() {
+		return life <= -4;
 	}
 }

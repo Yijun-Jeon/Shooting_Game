@@ -301,6 +301,40 @@ public class BackgroundPanel extends JPanel{
 			}	
 		}
 	}
+	public void drawBoss(Graphics page) {
+		if(boss.first) {
+			if(bossCnt++ % 8 == 0)
+				page.drawImage(bossImg, 0, boss.getY() - GameConstants.BOSSIMGHEIGHT/2, null);
+			if(boss.getY() < 0)
+				boss.moveDown();
+			else{
+				boss.first = false;
+				boss.bInvicible = false;
+			}
+		}
+		else{
+			page.drawImage(bossImg, 0, boss.getY() - GameConstants.BOSSIMGHEIGHT/2, null);
+			for(int i=0;i<plane.bullets.size();i++) {
+				Bullet bullet = plane.bullets.elementAt(i);
+				if(bullet.bSpecial) {
+					if(boss.getDamaged(bullet) && !boss.bInvicible) {
+						effects.add(new Effect(bullet.getPt(),2));
+						plane.removeBullet(i);
+						boss.life--;
+						gauge = gauge == 100 ? 100 : gauge + 5;
+					}
+				} else {	
+					if(boss.getDamaged(bullet) && !boss.bInvicible) {
+						effects.add(new Effect(bullet.getPt(),2));
+						plane.removeBullet(i);
+						gauge = gauge == 100 ? 100 : gauge + 5;
+					}
+				}
+			}
+		}
+		dbPage.setColor(Color.red);
+		dbPage.fillRect(0, 0, 740/100*boss.life + 40, 5);
+	}
 	private void drawBulletE(Graphics page) {
 		for(Enemy enemy: enemies) {
 			enemy.shoot();
@@ -394,15 +428,5 @@ public class BackgroundPanel extends JPanel{
 			GameConstants.ENEMYSHOOTTERM = GameConstants.ENEMYSHOOTTERM == 1 ? 1 : GameConstants.ENEMYSHOOTTERM-1; 
 		else if(enemyNum % 5 == 0) 
 			GameConstants.ENEMYMAKINGTERM = GameConstants.ENEMYMAKINGTERM == 1 ? 1 : GameConstants.ENEMYMAKINGTERM-1;
-	}
-	public void drawBoss(Graphics page) {
-		if(boss.first) {
-			if(bossCnt++ % 8 == 0)
-				page.drawImage(bossImg, 0, boss.getY() - GameConstants.BOSSIMGHEIGHT/2, null);
-			if(boss.getY() < 0)
-				boss.moveDown();
-			else boss.first = false;
-		}
-		else page.drawImage(bossImg, 0, boss.getY() - GameConstants.BOSSIMGHEIGHT/2, null);
 	}
 }
