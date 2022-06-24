@@ -15,7 +15,8 @@ public class BackgroundPanel extends JPanel{
 	Image backgroundImg,logoImg,heartImg,scoreImg,
 		  gameboardImg,bulletImg,planeImg,bulletEImg,
 		  effectImg,itemHeartImg,itemBulletImg,
-		  gameoverImg,specialBulletImg,specialGaugeImg;
+		  gameoverImg,specialBulletImg,specialGaugeImg,
+		  bossImg;
 	Image[] enemyImgs;
 	
 	ImageIcon startImg;
@@ -118,6 +119,8 @@ public class BackgroundPanel extends JPanel{
 		
 		bckCnt = 0;
 		bckIndex = 0;
+		
+		bossImg = new ImageIcon("./img/boss.png").getImage();
 	}
 
 	public void paint(Graphics page) {
@@ -153,6 +156,7 @@ public class BackgroundPanel extends JPanel{
 			drawEffect(dbPage);
 			drawItem(dbPage);
 			checkGameOver();
+			dbPage.drawImage(bossImg,0,-200,null);
 			break;
 		case 2:
 			drawGameboard(dbPage);
@@ -162,6 +166,18 @@ public class BackgroundPanel extends JPanel{
 			drawEffect(dbPage);
 			drawItem(dbPage);
 			dbPage.drawImage(gameoverImg, 150, 200, null);
+		case 3:
+			drawGameboard(dbPage);
+			drawStage(dbPage);
+			drawPlane(dbPage);
+			drawEnemy(dbPage);
+			plane.shoot(bShoot);
+			bShoot = false;
+			drawBullet(dbPage);
+			drawBulletE(dbPage);
+			drawEffect(dbPage);
+			drawItem(dbPage);
+			checkGameOver();
 			break;
 		}
 	}

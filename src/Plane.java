@@ -103,7 +103,10 @@ public class Plane{
 			if(bulletNum < 4)
 				bulletNum++;
 		}
-		else bulletNum = 1; 
+		else {  
+			if(bulletNum > 1)
+				bulletNum--;
+		}
 	}
 	public void increLife() {
 		life = life == 5 ? 5 : ++life;

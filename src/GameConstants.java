@@ -17,6 +17,9 @@ public class GameConstants {
 	public static final int ENEMYBULLETIMGWIDTH  = 13;
 	public static final int ENEMYBULLETIMGHIEHGT = 13;
 	
+	public static final int BOSSIMGWIDTH = 740;
+	public static final int BOSSIMGHEIGHT = 403;
+	
 	public static int 		PLANESPEED 	   = 4;
 	public static final int PLANEIMGWIDTH  = 115;
 	public static final int PLANEIMGHEIGHT = 86;
