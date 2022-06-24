@@ -154,6 +154,7 @@ public class KeyController implements KeyListener{
 			}
 			break;
 		case 2:
+		case 4:
 			if(keyBuff == KeyEvent.VK_ENTER)
 				panel.moveToStart();
 			keyBuff = 0;

@@ -114,6 +114,9 @@ public class Plane{
 	public void decreLife() {
 		--life;
 	}
+	public void decre2Life() {
+		life -= 2;
+	}
 	public boolean takeItem(Item item) {
 		if(getDistance(pt,item.getPt()) < damageDistance) {
 			switch(item.getType()) {

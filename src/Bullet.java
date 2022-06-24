@@ -34,6 +34,18 @@ public class Bullet {
 		damage = 1;
 		bSpecial = false;
 	}
+	public Bullet(Point point, int degree) {
+		pt = new Point(point.x,point.y - GameConstants.BOSSIMGHEIGHT/2);
+		damage = 1;
+		bSpecial = false;
+		this.degree = degree; 
+	}
+	public Bullet(Boss boss) {
+		pt = new Point(boss.getX(),boss.getY() + GameConstants.BOSSIMGHEIGHT/2);
+		damage = 1;
+		bSpecial = false;
+		degree = (int)(Math.random()*140) + 110; 
+	}
 	
 	public void setX(int x) {pt.x = x;}
 	public void setY(int y) {pt.y = y;}
@@ -50,19 +62,19 @@ public class Bullet {
 		return getY() < 0;
 	}
 	public boolean move() {
-		checkPt();
 		if(degree != -1) {
 			pt.x -= GameConstants.ENEMYBULLETSPEED*Math.sin(Math.toRadians(degree));
 		 	pt.y -= GameConstants.ENEMYBULLETSPEED*Math.cos(Math.toRadians(degree));
 		}
+		checkPt();
 		return getY() > GameConstants.GAMEBOARDHEIGHT;
 	}
 	public void checkPt() {
-		if(getX() <= 0) {
+		if(getX() < 0) {
 			setX(0);
 			degree = 360 - degree;
 		}
-		else if(getX() >= GameConstants.GAMEBOARDWIDTH) {
+		else if(getX() > GameConstants.GAMEBOARDWIDTH) {
 			setX(GameConstants.GAMEBOARDWIDTH);
 			degree = 360 - degree; 
 		}

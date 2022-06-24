@@ -169,11 +169,13 @@ public class BackgroundPanel extends JPanel{
 			drawEffect(dbPage);
 			drawItem(dbPage);
 			dbPage.drawImage(gameoverImg, 150, 200, null);
+			break;
 		case 3:
 			drawGameboard(dbPage);
 			drawBoss(dbPage);
 			drawPlane(dbPage);
 			drawEnemy(dbPage);
+			drawBulletBoss(dbPage);
 			plane.shoot(bShoot);
 			bShoot = false;
 			drawBullet(dbPage);
@@ -182,6 +184,15 @@ public class BackgroundPanel extends JPanel{
 			drawItem(dbPage);
 			checkGameStatus();
 			drawStage(dbPage);
+			break;
+		case 4:
+			drawGameboard(dbPage);
+			drawBoss(dbPage);
+			drawBulletBoss(dbPage);
+			drawEffect(dbPage);
+			drawItem(dbPage);
+			drawStage(dbPage);
+			dbPage.drawImage(gameoverImg, 150, 200, null);
 			break;
 		}
 	}
@@ -297,6 +308,7 @@ public class BackgroundPanel extends JPanel{
 				if(plane.getDamaged(enemy) && !bDamaged) {
 					effects.add(new Effect(plane.getPt(),2));
 					planeDamaged();
+					plane.decreLife();
 				}
 			}	
 		}
@@ -314,23 +326,25 @@ public class BackgroundPanel extends JPanel{
 		}
 		else{
 			page.drawImage(bossImg, 0, boss.getY() - GameConstants.BOSSIMGHEIGHT/2, null);
+			if(boss.getAttacked(plane) && !bDamaged) {
+				plane.decre2Life();
+				planeDamaged();
+			}
 			for(int i=0;i<plane.bullets.size();i++) {
 				Bullet bullet = plane.bullets.elementAt(i);
-				if(bullet.bSpecial) {
-					if(boss.getDamaged(bullet) && !boss.bInvicible) {
-						effects.add(new Effect(bullet.getPt(),2));
-						plane.removeBullet(i);
-						boss.life--;
+				if(boss.getDamaged(bullet) && !boss.bInvicible) {
+					boss.makeItem(items,bullet);
+					if(bullet.bSpecial) {
+						effects.add(new Effect(bullet.getPt(),1));
+					}else {
 						gauge = gauge == 100 ? 100 : gauge + 5;
-					}
-				} else {	
-					if(boss.getDamaged(bullet) && !boss.bInvicible) {
 						effects.add(new Effect(bullet.getPt(),2));
-						plane.removeBullet(i);
-						gauge = gauge == 100 ? 100 : gauge + 5;
 					}
+					plane.removeBullet(i);
 				}
 			}
+			if(bossCnt++ % 300 == 0)
+				boss.makeBullet();
 		}
 		dbPage.setColor(Color.red);
 		dbPage.fillRect(0, 0, 740/100*boss.life + 40, 5);
@@ -344,6 +358,7 @@ public class BackgroundPanel extends JPanel{
 				if(plane.getDamaged(bulletE) && !bDamaged) {
 					effects.add(new Effect(bulletE.getPt(),2));
 					enemy.removeBullet(i);
+					plane.decreLife();
 					planeDamaged();
 				}
 				else if((bulletE.move()))
@@ -351,12 +366,33 @@ public class BackgroundPanel extends JPanel{
 			}
 		}
 	}
+	private void drawBulletBoss(Graphics page) {
+		for(int i=0; i< boss.bullets.size();i++) {
+			Bullet bulletB = boss.bullets.elementAt(i);
+			page.drawImage(bulletEImg,bulletB.getX()-GameConstants.ENEMYBULLETIMGWIDTH/2,bulletB.getY()-GameConstants.ENEMYBULLETIMGHIEHGT/2,null);
+			if(plane.getDamaged(bulletB) && !bDamaged) {
+				effects.add(new Effect(bulletB.getPt(),2));
+				boss.removeBullet(i);
+				plane.decreLife();
+				planeDamaged();
+			}
+			else if((bulletB.move()))
+				boss.removeBullet(i);
+		}
+	}
 	private void checkGameStatus() {
 		if(plane.getLife() < 0) {
 			effects.add(new Effect(plane.getPt(),1));
-			status = 2;
+			switch(status) {
+			case 1:
+				status = 2;
+				break;
+			case 3:
+				status = 4;
+				break;
+			}
 		}
-		if(status == 1 && score >= 100) 
+		else if(status == 1 && score >= 100) 
 			status = 3;
 	}
 	public void moveToStart() {
@@ -381,13 +417,21 @@ public class BackgroundPanel extends JPanel{
 		effects.clear();
 		items.clear();
 		
+		gauge = 0;
+		gaugeCnt = 0;
+		
+		boss = new Boss();
+		bossCnt = 0;
+		
+		bckCnt = 0;
+		bckIndex = 0;
+		
 		bShoot = false;
 		lblScore.setVisible(true);
 		lblStart.setVisible(false);
 	}
 	public void planeDamaged() {
 		planeInvicible();
-		plane.decreLife();
 		plane.increBulletNum(bDamaged);
 	}
 	public void planeInvicible() {
